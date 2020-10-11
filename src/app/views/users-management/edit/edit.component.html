@@ -1,0 +1,563 @@
+<div class="animated fadeIn">
+  <!-- <div class="row text-center">
+    <div class="col-12">
+      <div class="card card-title">
+        <div class="card-body card-body-title">
+          <span class="title">会員情報</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br /> -->
+
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card" style="padding: 16px;">
+        <form class="container" [formGroup]="editUserForm" (ngSubmit)="updateUser()">
+          <label class="label-title">{{'USER.LABEL.COMPANY_NAME' | translate}}</label>
+          <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="company">{{'USER.LABEL.COMPANY_NAME' | translate}} <span class="asterisk">*</span></label>
+                  <input
+                    class="form-control"
+                    id="company"
+                    type="text"
+                    value="{{user.company}}"
+                    formControlName="company"
+                    [class.is-invalid]="
+                      editUserForm.get('company').invalid &&
+                      editUserForm.get('company').touched
+                    "
+                  />
+                  <div [style.visibility]="(company.invalid && company.touched) || company.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="company.errors?.required" class="text-danger">
+                      {{'USER.FORM.MESSAGE.COMPANY_NAME.REQUIRE' | translate}}
+                    </small>
+                    <small *ngIf="company.errors?.maxlength" class="text-danger">
+                      {{'USER.FORM.MESSAGE.COMPANY_NAME.MAX' | translate}}
+                    </small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>{{'USER.LABEL.COUNTRY' | translate}}</label>
+                  <select
+                    class="form-control"
+                    (change)="getCountry($event.target.value)"
+                    formControlName="country_id"
+                  >
+                    <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id == user.country_id">{{country.country}}</option>
+                  </select>
+                  <div [style.visibility]="'hidden'" class="error-message"></div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="phone_number">{{'USER.LABEL.PHONE_NUMBER' | translate}}</label>
+                  <input
+                    class="form-control"
+                    id="phone_number"
+                    type="text"
+                    name="phone_number"
+                    value="{{user.phone_number}}"
+                    formControlName="phone_number"
+                    [class.is-invalid]="
+                      editUserForm.get('phone_number').invalid &&
+                      editUserForm.get('phone_number').touched
+                    "
+                  />
+                  <div [style.visibility]="(phone_number.invalid && phone_number.touched) || phone_number.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="!phone_number.errors?.pattern && (phone_number.errors?.minlength || phone_number.errors?.maxlength)" class="text-danger">
+                      {{'USER.FORM.MESSAGE.PHONE_NUMBER.MIN_MAX' | translate}}
+                    </small>
+                    <small *ngIf="phone_number.errors?.pattern" class="text-danger">
+                      {{'USER.FORM.MESSAGE.PHONE_NUMBER.PATTERN' | translate}}
+                    </small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="postal_code">{{'USER.LABEL.ZIP_CODE' | translate}}</label>
+                  <input
+                    class="form-control"
+                    id="postal_code"
+                    type="text"
+                    name="postal_code"
+                    value="{{user.postal_code}}"
+                    formControlName="postal_code"
+                    [class.is-invalid]="
+                      editUserForm.get('postal_code').invalid &&
+                      editUserForm.get('postal_code').touched
+                    "
+                  />
+                  <div [style.visibility]="(postal_code.invalid && postal_code.touched) || postal_code.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="!postal_code.errors?.pattern && (postal_code.errors?.minlength || postal_code.errors?.maxlength)" class="text-danger">
+                      {{'USER.FORM.MESSAGE.ZIP_CODE.MIN_MAX' | translate}}
+                    </small>
+                    <small *ngIf="postal_code.errors?.pattern" class="text-danger">
+                      {{'USER.FORM.MESSAGE.ZIP_CODE.PATTERN' | translate}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="address">{{'USER.LABEL.STREET_ADDRESS' | translate}}</label>
+                  <input
+                    class="form-control"
+                    id="address"
+                    type="text"
+                    name="address"
+                    value="{{user.address}}"
+                    formControlName="address"
+                    [class.is-invalid]="
+                      editUserForm.get('address').invalid &&
+                      editUserForm.get('address').touched
+                    "
+                  />
+                  <div [style.visibility]="(address.invalid && address.touched) || address.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="address.errors?.maxlength" class="text-danger">
+                      {{'USER.FORM.MESSAGE.STREET_ADDRESS.MAX' | translate}}
+                    </small>
+                  </div>
+            </div>
+          </div>
+
+          <label class="label-title">{{'USER.LABEL.CONTACT' | translate}}</label>
+          <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="name">{{'USER.LABEL.CONTACT_NAME' | translate}} <span class="asterisk">*</span></label>
+                  <input
+                    class="form-control"
+                    id="name"
+                    type="text"
+                    name="name"
+                    value="{{user.name}}"
+                    formControlName="name"
+                    [class.is-invalid]="
+                      editUserForm.get('name').invalid &&
+                      editUserForm.get('name').touched
+                    "
+                  />
+                  <div [style.visibility]="(name.invalid && name.touched) || name.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="name.errors?.required" class="text-danger">
+                      {{'USER.FORM.MESSAGE.CONTACT_NAME.REQUIRE' | translate}}
+                    </small>
+                    <small *ngIf="name.errors?.maxlength" class="text-danger">
+                      {{'USER.FORM.MESSAGE.CONTACT_NAME.MAX' | translate}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="email">{{'USER.LABEL.EMAIL' | translate}}<span class="asterisk">*</span></label>
+                  <input
+                    class="form-control"
+                    id="email"
+                    type="text"
+                    name="email"
+                    value="{{user.email}}"
+                    formControlName="email"
+                    [class.is-invalid]="
+                      editUserForm.get('email').invalid &&
+                      editUserForm.get('email').touched
+                    "
+                    (input)="hideErrorIsEmailExisted();"
+                  />
+                  <div [style.visibility]="(email.invalid && email.touched) || email.dirty ? 'visible' : 'hidden'" class="error-message">
+                    <small *ngIf="email.errors?.required" class="text-danger">
+                      {{'USER.FORM.MESSAGE.EMAIL.REQUIRE' | translate}}
+                    </small>
+                    <small *ngIf="email.errors?.maxlength" class="text-danger">
+                      {{'USER.FORM.MESSAGE.EMAIL.MAX' | translate}}
+                    </small>
+                    <small *ngIf="email.errors?.pattern && !email.errors?.maxlength" class="text-danger">
+                      {{'USER.FORM.MESSAGE.EMAIL.PATTERN' | translate}}
+                    </small>
+                    <small *ngIf="isEmailExisted" class="text-danger">
+                      {{'USER.FORM.MESSAGE.EMAIL.DUPLICATE_EMAIL' | translate}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <label class="label-title">{{'USER.LABEL.DELIVERY' | translate}}</label>
+          <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+            <div class="row">
+              <div class="col-xl-8 col-sm-6"></div>
+              <div class="col-xl-4 col-sm-6">
+                <div class="text-right">
+                  <button type="button" class="btn btn-pill btn-primary" data-toggle="modal"
+                    (click)="addUserPaymentAddress.show(); clearAddUserPaymentAddressForm()">
+                    {{'COMMON.BUTTON.BTN_ADD' | translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered table-striped text-center">
+                    <thead>
+                      <tr>
+                        <th style="width: 50px; min-width: 50px;">{{'USER.TABLE.NO' | translate}}</th>
+                        <th style="width: 100px; min-width: 80px;">{{'USER.TABLE.NAME' | translate}}</th>
+                        <th style="width: 150px; min-width: 100px;">{{'USER.TABLE.COUNTRY' | translate}}</th>
+                        <th style="width: 150px; min-width: 150px;">{{'USER.TABLE.PHONE_NUMBER' | translate}}</th>
+                        <th style="width: 150px; min-width: 100px;">{{'USER.TABLE.ZIP_CODE' | translate}}</th>
+                        <th style="width: 300px; min-width: 250px;">{{'USER.TABLE.ADDRESS' | translate}}</th>
+                        <th style="width: 220px; min-width: 220px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let userPaymentAddress of userPaymentAddresses; let i = index">
+                        <td class="align-middle">{{i + 1}}</td>
+                        <td class="align-middle">{{userPaymentAddress.name}}</td>
+                        <td class="align-middle">{{userPaymentAddress.country.country}}</td>
+                        <td class="align-middle">{{userPaymentAddress.phone_number}}</td>
+                        <td class="align-middle">{{userPaymentAddress.postal_code}}</td>
+                        <td class="align-middle">{{userPaymentAddress.address}}</td>
+                        <td class="align-middle">
+                          <button type="button" class="btn btn-sm btn-pill btn-success" data-toggle="modal"
+                            (click)="editUserPaymentAddress.show(); getUserPaymentAddress(userPaymentAddress)">
+                            {{'COMMON.BUTTON.BTN_EDIT' | translate}}</button>&nbsp;
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-pill btn-danger"
+                            (click)="modalConfirmRemoveAddress.show(); getUserPaymentAddress(userPaymentAddress)">
+                            {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+                          </button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="!userPaymentAddresses.length">
+                        <td colspan="7">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row text-center">
+            <div class="col-12">
+              <button type="submit" class="btn btn-pill mr-2 btn-success">
+                {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+              </button>
+              <button type="submit" class="btn btn-light btn-pill" [routerLink]="['/user-management']">
+                {{'COMMON.BUTTON.BTN_BACK' | translate}}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP ADD ADDRESS -->
+<div bsModal #addUserPaymentAddress="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4">
+        <form class="container" [formGroup]="addUserPaymentAddressForm" (ngSubmit)="createUserPaymentAddress()">
+          <div class="col-12">
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;">Add Delivery</h3>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.NAME' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="name"
+                  type="text"
+                  name="name"
+                  formControlName="name"
+                  [class.is-invalid]="
+                    addUserPaymentAddressForm.get('name').invalid &&
+                    addUserPaymentAddressForm.get('name').touched
+                  "
+                />
+                <div [style.visibility]="isAddAddressSubmitted ||
+                (addUserPaymentAddressForm.get('name').invalid && addUserPaymentAddressForm.get('name').touched) ||
+                addUserPaymentAddressForm.get('name').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addUserPaymentAddressForm.get('name').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.DELIVERY_NAME.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="addUserPaymentAddressForm.get('name').errors?.maxlength" class="text-danger">
+                    {{'USER.FORM.MESSAGE.DELIVERY_NAME.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.COUNTRY' | translate}} <span class="asterisk">*</span></label>
+                <select
+                      class="form-control"
+                      (change)="getCountry($event.target.value)"
+                      formControlName="country_id"
+                >
+                  <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id == countries[0].id">{{country.country}}</option>
+                </select>
+                <div [style.visibility]="'hidden'" class="error-message"></div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.PHONE_NUMBER' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="phone_number"
+                  type="text"
+                  name="phone_number"
+                  formControlName="phone_number"
+                  [class.is-invalid]="
+                    addUserPaymentAddressForm.get('phone_number').invalid &&
+                    addUserPaymentAddressForm.get('phone_number').touched
+                  "
+                />
+                <div [style.visibility]="isAddAddressSubmitted ||
+                (addUserPaymentAddressForm.get('phone_number').invalid && addUserPaymentAddressForm.get('phone_number').touched) ||
+                addUserPaymentAddressForm.get('phone_number').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addUserPaymentAddressForm.get('phone_number').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.REQUIRE' | translate}}{{'USER.FORM.MESSAGE.PHONE_NUMBER.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="!addUserPaymentAddressForm.get('phone_number').errors?.pattern && (addUserPaymentAddressForm.get('phone_number').errors?.minlength || addUserPaymentAddressForm.get('phone_number').errors?.maxlength)" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.MIN_MAX' | translate}}
+                  </small>
+                  <small *ngIf="addUserPaymentAddressForm.get('phone_number').errors?.pattern" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.PATTERN' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.ZIP_CODE' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="postal_code"
+                  type="text"
+                  name="postal_code"
+                  formControlName="postal_code"
+                  [class.is-invalid]="
+                    addUserPaymentAddressForm.get('postal_code').invalid &&
+                    addUserPaymentAddressForm.get('postal_code').touched
+                  "
+                />
+                <div [style.visibility]="isAddAddressSubmitted ||
+                (addUserPaymentAddressForm.get('postal_code').invalid && addUserPaymentAddressForm.get('postal_code').touched) ||
+                addUserPaymentAddressForm.get('postal_code').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addUserPaymentAddressForm.get('postal_code').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="!addUserPaymentAddressForm.get('postal_code').errors?.pattern && (addUserPaymentAddressForm.get('postal_code').errors?.minlength || addUserPaymentAddressForm.get('postal_code').errors?.maxlength)" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.MIN_MAX' | translate}}
+                  </small>
+                  <small *ngIf="addUserPaymentAddressForm.get('postal_code').errors?.pattern" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.PATTERN' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.ADDRESS' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="address"
+                  type="text"
+                  name="address"
+                  formControlName="address"
+                  [class.is-invalid]="
+                    addUserPaymentAddressForm.get('address').invalid &&
+                    addUserPaymentAddressForm.get('address').touched
+                  "
+                />
+                <div [style.visibility]="isAddAddressSubmitted ||
+                (addUserPaymentAddressForm.get('address').invalid && addUserPaymentAddressForm.get('address').touched) ||
+                addUserPaymentAddressForm.get('address').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addUserPaymentAddressForm.get('address').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ADDRESS.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="addUserPaymentAddressForm.get('address').errors?.maxlength" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ADDRESS.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="submit" class="btn  mr-2 btn-pill btn-primary">
+              {{'COMMON.BUTTON.BTN_ADD' | translate}}
+            </button>
+            <button type="button" class="btn btn-pill btn-light" (click)="addUserPaymentAddress.hide()">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /POPUP ADD ADDRESS -->
+
+<!-- POPUP EDIT ADDRESS -->
+<div bsModal #editUserPaymentAddress="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4">
+        <form class="container" [formGroup]="editUserPaymentAddressForm" (ngSubmit)="updateUserPaymentAddress()">
+          <div class="col-12">
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;">Edit Delivery</h3>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.NAME' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="name"
+                  type="text"
+                  name="name"
+                  formControlName="name"
+                  [class.is-invalid]="
+                    editUserPaymentAddressForm.get('name').invalid &&
+                    editUserPaymentAddressForm.get('name').touched
+                  "
+                />
+                <div [style.visibility]="isEditAddressSubmitted ||
+                (addUserPaymentAddressForm.get('name').invalid && addUserPaymentAddressForm.get('name').touched) ||
+                addUserPaymentAddressForm.get('name').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editUserPaymentAddressForm.get('name').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.DELIVERY_NAME.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="editUserPaymentAddressForm.get('name').errors?.maxlength" class="text-danger">
+                    {{'USER.FORM.MESSAGE.DELIVERY_NAME.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.COUNTRY' | translate}} <span class="asterisk">*</span></label>
+                <select
+                      class="form-control"
+                      (change)="getCountry($event.target.value)"
+                      formControlName="country_id"
+                >
+                  <option *ngFor="let country of countries" [value]="country.id">{{country.country}}</option>
+                </select>
+                <div [style.visibility]="'hidden'" class="error-message"></div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.PHONE_NUMBER' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="phone_number"
+                  type="text"
+                  name="phone_number"
+                  formControlName="phone_number"
+                  [class.is-invalid]="
+                    editUserPaymentAddressForm.get('phone_number').invalid &&
+                    editUserPaymentAddressForm.get('phone_number').touched
+                  "
+                />
+                <div [style.visibility]="isEditAddressSubmitted ||
+                (addUserPaymentAddressForm.get('phone_number').invalid && addUserPaymentAddressForm.get('phone_number').touched) ||
+                addUserPaymentAddressForm.get('phone_number').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editUserPaymentAddressForm.get('phone_number').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="!editUserPaymentAddressForm.get('phone_number').errors?.pattern && (editUserPaymentAddressForm.get('phone_number').errors?.minlength || editUserPaymentAddressForm.get('phone_number').errors?.maxlength)" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.MIN_MAX' | translate}}
+                  </small>
+                  <small *ngIf="editUserPaymentAddressForm.get('phone_number').errors?.pattern" class="text-danger">
+                    {{'USER.FORM.MESSAGE.PHONE_NUMBER.PATTERN' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.ZIP_CODE' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="postal_code"
+                  type="text"
+                  name="postal_code"
+                  formControlName="postal_code"
+                  [class.is-invalid]="
+                    editUserPaymentAddressForm.get('postal_code').invalid &&
+                    editUserPaymentAddressForm.get('postal_code').touched
+                  "
+                />
+                <div [style.visibility]="isEditAddressSubmitted ||
+                (addUserPaymentAddressForm.get('postal_code').invalid && addUserPaymentAddressForm.get('postal_code').touched) ||
+                addUserPaymentAddressForm.get('postal_code').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editUserPaymentAddressForm.get('postal_code').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="!editUserPaymentAddressForm.get('postal_code').errors?.pattern && (editUserPaymentAddressForm.get('postal_code').errors?.minlength || addUserPaymentAddressForm.get('postal_code').errors?.maxlength)" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.MIN_MAX' | translate}}
+                  </small>
+                  <small *ngIf="editUserPaymentAddressForm.get('postal_code').errors?.pattern" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ZIP_CODE.PATTERN' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label>{{'USER.LABEL.ADDRESS' | translate}} <span class="asterisk">*</span></label>
+                <input
+                  class="form-control"
+                  id="address"
+                  type="text"
+                  name="address"
+                  formControlName="address"
+                  [class.is-invalid]="
+                    editUserPaymentAddressForm.get('address').invalid &&
+                    editUserPaymentAddressForm.get('address').touched
+                  "
+                />
+                <div [style.visibility]="isEditAddressSubmitted ||
+                (addUserPaymentAddressForm.get('address').invalid && addUserPaymentAddressForm.get('address').touched) ||
+                addUserPaymentAddressForm.get('address').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editUserPaymentAddressForm.get('address').errors?.required" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ADDRESS.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="editUserPaymentAddressForm.get('address').errors?.maxlength" class="text-danger">
+                    {{'USER.FORM.MESSAGE.ADDRESS.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="submit" class="btn  mr-2 btn-pill btn-success">
+              {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+            </button>
+            <button type="button" class="btn btn-pill btn-light" (click)="editUserPaymentAddress.hide()">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalConfirmRemoveAddress="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div style="max-width: 500px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4 text-center">
+        <span class="modal-title">Are you sure you want to delete this delivery?</span>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="button" class="btn mr-2  btn-pill btn-danger" (click)="deleteUserPaymentAddress()">
+            {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+          </button>
+          <button type="button" class="btn  btn btn-pill btn-light" (click)="modalConfirmRemoveAddress.hide()">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-dialog></app-dialog>
+<ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

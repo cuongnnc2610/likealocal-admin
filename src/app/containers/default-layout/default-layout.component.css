@@ -1,0 +1,26 @@
+.app-header {
+  background: white;
+  border-bottom: solid 0.5px #E4E5E6;
+}
+
+.breadcrumb-menu {
+  color: white;
+  padding-right: 20px;
+}
+
+button.btn.btn-menu {
+  color: rgb(170, 170, 170);
+}
+
+button.btn.btn-menu :hover {
+  color: white;
+}
+
+.navbar-toggler-icon {
+  color: white;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  text-align: center;
+}

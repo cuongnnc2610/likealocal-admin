@@ -1,0 +1,64 @@
+<div bsModal #modalImpCSV="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true" data-keyboard="false"  data-backdrop="static" (onHide)="hideModal()">
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content f-modal-alert">
+      <div class="mx-4 mt-5 mb-4">
+        <div class="col-12">
+          <form>
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;">Upload and import CSV</h3>
+              <div *ngIf="!files.length" class="form-group col-12">
+                <div class="col-12 rmpm dropzone" appDrag (files)="filesDropped($event)">
+                  <div class="text-wrapper">
+                    <div class="centered">
+                      <input type="file" accept=".csv" #file style="display:none;" />
+                      <label for="file"><a href="javascript:void(0);"  (click)="file.click()" >Choose a file</a><span class="box__dragndrop"> or drag it here</span>.</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngFor="let item of files" class="form-group col-12 file-item">
+                <span class="file-name" *ngIf="item">{{item.file.name}}</span>
+                <span class="file-ctl" style="float: right;" (click)="removeFile()"><i class="fa fa-remove"></i></span>
+              </div>
+              
+              <div *ngIf="!file_uploaded && (file_uploading || file_processing)" class="form-group col-12" >
+                
+                <progressbar class="progress-bar" [value]="file_upload_value" [max]="file_upload_max" >
+                  <i *ngIf="file_uploading">{{ file_percent }}</i>
+                  <i *ngIf="file_processing && !line_message_error">Processing...</i>
+                  <i *ngIf="line_message_error">Error...</i>
+                </progressbar>
+              </div>
+
+              <div *ngIf="line_message_error" class="form-group col-12" >
+                <span class="help-block text-danger">{{ line_message_error }}</span>
+              </div>
+
+              <div *ngIf="file_uploaded" class="form-group col-12 file-done" >
+                <div class="f-modal-icon f-modal-success animate">
+                  <span class="f-modal-line f-modal-tip animateSuccessTip"></span>
+                  <span class="f-modal-line f-modal-long animateSuccessLong"></span>
+                  <div class="f-modal-placeholder"></div>
+                  <div class="f-modal-fix"></div>
+                </div>
+                <span class="file-done-text">CSV has been successfully imported</span>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="pt-4 d-flex justify-content-center">
+          <div *ngIf="!file_uploaded">
+            <button *ngIf="!file_uploading" type="button" class="btn mr-2 btn-pill btn-success" (click)="upload()">Import</button>
+            <button  type="button" class="btn   btn-pill btn-light"  (click)="removeFile();modalImpCSV.hide()">Cancel</button>
+          </div>
+          <button *ngIf="file_uploaded" type="button" class="btn btn-pill btn-light" (click)="doneUploadFile()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

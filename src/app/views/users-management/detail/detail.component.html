@@ -1,0 +1,140 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card" style="padding: 16px;">
+        <form class="container">
+        <label class="label-title">{{'USER.LABEL.BILLING_ADDRESS' | translate}}</label>
+        <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>{{'USER.LABEL.COMPANY_NAME' | translate}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="{{user.company}}"
+                  disabled="true"
+                />
+              </div>
+              <div class="form-group">
+                <label>{{'USER.LABEL.COUNTRY' | translate}}</label>
+                <select
+                      class="form-control"
+                      disabled="true"
+                >
+                  <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id == user.country_id">{{country.country}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>{{'USER.LABEL.PHONE_NUMBER' | translate}}</label>
+                <input
+                  class="form-control"
+                  value="{{user.phone_number}}"
+                  disabled="true"
+                />
+              </div>
+              <div class="form-group">
+                <label>{{'USER.LABEL.ZIP_CODE' | translate}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="{{user.postal_code}}"
+                  disabled="true"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>{{'USER.LABEL.STREET_ADDRESS' | translate}}</label>
+            <input
+              type="email"
+              class="form-control"
+              value="{{user.address}}"
+              disabled="true"
+            />
+          </div>
+        </div>
+
+        <label class="label-title">{{'USER.LABEL.CONTACT' | translate}}</label>
+        <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>{{'USER.LABEL.CONTACT_NAME' | translate}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="{{user.name}}"
+                  disabled="true"
+                />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>{{'USER.LABEL.EMAIL' | translate}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="{{user.email}}"
+                  disabled="true"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label class="label-title">{{'USER.LABEL.DELIVERY' | translate}}</label>
+        <div class="card" style="padding: 10px; border-radius: 0 5px 5px 5px;">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="table-responsive">
+                <table
+                  class="table table-hover table-bordered table-striped text-center"
+                >
+                  <thead>
+                    <tr>
+                      <th style="width: 50px; min-width: 50px;">{{'USER.TABLE.NO' | translate}}</th>
+                        <th style="width: 100px; min-width: 80px;">{{'USER.TABLE.NAME' | translate}}</th>
+                        <th style="width: 150px; min-width: 100px;">{{'USER.TABLE.COUNTRY' | translate}}</th>
+                        <th style="width: 150px; min-width: 150px;">{{'USER.TABLE.PHONE_NUMBER' | translate}}</th>
+                        <th style="width: 150px; min-width: 100px;">{{'USER.TABLE.ZIP_CODE' | translate}}</th>
+                        <th style="width: 300px; min-width: 250px;">{{'USER.TABLE.ADDRESS' | translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let userPaymentAddress of userPaymentAddresses; let i = index">
+                      <td class="align-middle">{{i + 1}}</td>
+                      <td class="align-middle">{{userPaymentAddress.name}}</td>
+                      <td class="align-middle">{{userPaymentAddress.country.country}}</td>
+                      <td class="align-middle">{{userPaymentAddress.phone_number}}</td>
+                      <td class="align-middle">{{userPaymentAddress.postal_code}}</td>
+                      <td class="align-middle">{{userPaymentAddress.address}}</td>
+                    </tr>
+                    <tr *ngIf="!userPaymentAddresses.length">
+                      <td colspan="6">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row text-center">
+          <div class="col-12">
+            <button
+              type="submit"
+              class="btn btn-light btn-pill"
+              [routerLink]="['/user-management']">
+              {{'COMMON.BUTTON.BTN_BACK' | translate}}
+            </button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+</div>

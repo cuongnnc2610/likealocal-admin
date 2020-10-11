@@ -1,0 +1,253 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+              <div class="text-right">
+                <button
+                  type="button"
+                  class="btn btn-pill btn-primary"
+                  data-toggle="modal"
+                  (click)="clearAddNotificationForm(); modalAddNotification.show();"
+                >
+                {{ "COMMON.BUTTON.BTN_ADD" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="table-responsive">
+            <table
+              class="table table-hover table-bordered table-striped"
+            >
+              <thead>
+              <tr>
+                <th style="width: 50px; min-width: 50px;" class="text-center">{{ "NOTIFICATIONS.TABLE.NO" | translate }}</th>
+                <th style="width: 400px; min-width: 400px;" class="text-center">{{ "NOTIFICATIONS.TABLE.TITLE" | translate }}</th>
+                <th style="width: 400px; min-width: 400px;" class="text-center">{{ "NOTIFICATIONS.TABLE.MESSAGE" | translate }}</th>
+                <th style="width: 150px; min-width: 150px;" class="text-center">{{ "NOTIFICATIONS.TABLE.DATE_TIME" | translate }}</th>
+                <th style="width: 310px; min-width: 310px;" class="text-center"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let notification of notifications; let i = index">
+                <td style="width: 50px; min-width: 50px;" class="text-center">{{ from + i }}</td>
+                <td style="width: 400px; min-width: 400px;">
+                  <span class="word-break" disabled>
+                    {{ notification.title.length > 104 ? notification.title.substring(0, 100) + '...' : notification.title }}
+                  </span>
+                </td>
+                <td style="width: 400px; min-width: 400px;">
+                  <span class="word-break" disabled>
+                    {{ notification.message.length > 104 ? notification.message.substring(0, 100) + '...' : notification.message }}
+                  </span>
+                </td>
+                <td style="width: 150px; min-width: 100px;" class="text-center">{{ notification.updatedAt | date: 'yyyy/M/dd HH:mm' }}</td>
+                <td style="width: 310px; min-width: 310px;" class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-pill btn-primary"
+                    data-toggle="modal"
+                    (click)="getNotification(notification); modalDetailNotification.show();"
+                  >
+                    {{'COMMON.BUTTON.BTN_DETAIL' | translate}}
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-pill btn-success"
+                    data-toggle="modal"
+                    (click)="getNotification(notification); modalEditNotification.show();"
+                  >
+                    {{'COMMON.BUTTON.BTN_EDIT' | translate}}
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-pill btn-danger"
+                    (click)="getNotification(notification); modalConfirmRemoveNotification.show();"
+                  >
+                    {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="!notifications?.length" class="text-center">
+                <td colspan="5">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="notifications.length" >
+              <ngb-pagination [collectionSize]="total" [(page)]="page" [rotate]="true" [pageSize]="pageSize" [maxSize]="5"
+                              (pageChange)="currentPage(page)">
+                <ng-template ngbPaginationPrevious>{{'COMMON.BUTTON.BTN_PRE' | translate}}</ng-template>
+                <ng-template ngbPaginationNext>{{'COMMON.BUTTON.BTN_NEXT' | translate}}</ng-template>
+                <ng-template ngbPaginationEllipsis>...</ng-template>
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div bsModal #modalConfirmRemoveNotification="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div style="max-width: 500px !important;" class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="mx-4 mt-5 mb-4 text-center">
+          <span class="modal-title" >{{'NOTIFICATIONS.CONFIRM.DELETE_NOTIFICATION' | translate}}</span>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="button" class="width-btn btn mr-2  btn-pill btn-danger" (click)="deleteNotification()">
+              {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+            </button>
+            <button type="button" class="width-btn btn  btn-pill btn-light" (click)="modalConfirmRemoveNotification.hide()">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalAddNotification="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" >
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form [formGroup]="addNotificationForm" (ngSubmit)="createNotification()">
+        <div class="mx-4 mt-5 mb-4">
+
+          <div class="col-12">
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;">{{'NOTIFICATIONS.FORM.TITLE.ADD_NOTICE' | translate}}</h3>
+
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.TITLE' | translate}}  <span class="asterisk">*</span></label>
+                <textarea rows="3" type="text" class="form-control"  formControlName="title" ></textarea>
+                <div [style.visibility]="isAddNotificationSubmitted ||
+                (addNotificationForm.get('title').invalid && addNotificationForm.get('title').touched) ||
+                addNotificationForm.get('title').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addNotificationForm.get('title').errors?.required" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.TITLE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="addNotificationForm.get('title').errors?.maxlength" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.TITLE.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.MESSAGE' | translate}} <span class="asterisk">*</span></label>
+                <textarea rows="10" type="text" class="form-control" formControlName="message" ></textarea>
+                <div [style.visibility]="isAddNotificationSubmitted ||
+                (addNotificationForm.get('message').invalid && addNotificationForm.get('message').dirty) ||
+                addNotificationForm.get('message').touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="addNotificationForm.get('message').errors?.required" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.MESSAGE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="addNotificationForm.get('message').errors?.maxlength" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.MESSAGE.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="submit" class="btn mr-2 btn-pill btn-primary" >
+              {{'COMMON.BUTTON.BTN_ADD' | translate}}
+            </button>
+            <button type="button" class="btn btn-pill btn-light" (click)="modalAddNotification.hide(); clearAddNotificationForm();">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalEditNotification="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" >
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editNotificationForm" (ngSubmit)="editNotification()">
+        <div class="mx-4 mt-5 mb-4">
+
+          <div class="col-12">
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;"> {{'NOTIFICATIONS.FORM.TITLE.EDIT_NOTICE' | translate}}</h3>
+
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.TITLE' | translate}} <span class="asterisk">*</span></label>
+                <textarea rows="3" type="text" class="form-control"  formControlName="title" value="{{notification.title}}" ></textarea>
+                <div [style.visibility]="isEditNotificationSubmitted ||
+                (editNotificationForm.get('title').invalid && editNotificationForm.get('title').touched) ||
+                editNotificationForm.get('title').dirty ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editNotificationForm.get('title').errors?.required" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.TITLE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="editNotificationForm.get('title').errors?.maxlength" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.TITLE.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.MESSAGE' | translate}} <span class="asterisk">*</span></label>
+                <textarea rows="10" type="text" class="form-control" formControlName="message" value="{{notification.message}}" ></textarea>
+                <div [style.visibility]="isEditNotificationSubmitted ||
+                (editNotificationForm.get('message').invalid && editNotificationForm.get('message').dirty) ||
+                editNotificationForm.get('message').touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="editNotificationForm.get('message').errors?.required" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.MESSAGE.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="editNotificationForm.get('message').errors?.maxlength" class="help-block text-danger">
+                    {{'NOTIFICATIONS.FORM.MESSAGE.MESSAGE.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="submit" class="btn mr-2 btn-pill btn-success" >
+              {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+            </button>
+            <button type="button" class="btn btn-pill btn-light" (click)="modalEditNotification.hide(); clearEditNotificationForm();">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalDetailNotification="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" >
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="mx-4 mt-5 mb-4">
+          <div class="col-12">
+            <div class="row">
+              <h3 style="margin: -25px 0 20px 15px;">{{'NOTIFICATIONS.FORM.TITLE.DETAIL_NOTICE' | translate}}</h3>
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.TITLE' | translate}}</label>
+                <textarea rows="3" type="text" class="form-control" value="{{notification.title}}" disabled></textarea>
+              </div>
+              <div class="form-group col-12 has-error">
+                <label for="street">{{'NOTIFICATIONS.FORM.LABEL.MESSAGE' | translate}}</label>
+                <textarea rows="10" type="text" class="form-control" value="{{notification.message}}" disabled></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="button" class="btn btn-pill btn-light" (click)="modalDetailNotification.hide()">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<app-dialog></app-dialog>
+<ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

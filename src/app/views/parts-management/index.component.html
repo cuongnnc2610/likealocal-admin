@@ -1,0 +1,526 @@
+<div class="animated fadeIn">
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col-xl-4 col-md-6 col-sm-12">
+            <label for="searchGroup">{{'PARTS.LABEL.PART_ID' | translate}}</label>
+            <select class="form-control" id="searchGroup" [(ngModel)]="searchObj.group" >
+              <option value=""  selected>{{'PARTS.OPTIONS.CHOOSE_PART_ID' | translate}}</option>
+              <option *ngFor="let gp of groupParts" [ngValue]="gp.id">{{ gp.code_number }}</option>
+            </select>
+          </div>
+          <div class="form-group col-xl-4 col-md-6 col-sm-12">
+            <label for="searchCode">{{'PARTS.LABEL.PARTS_MODEL_ID' | translate}}</label>
+            <input type="text" id="searchCode" class="form-control" [(ngModel)]="searchObj.code"
+            (keyup.enter)="searchParts()" />
+          </div>
+          <div class="form-group col-xl-4 col-md-6 col-sm-12">
+            <label for="searchName">{{'PARTS.LABEL.PARTS_NAME' | translate}}</label>
+            <input type="text" id="searchName" class="form-control" [(ngModel)]="searchObj.name"
+            (keyup.enter)="searchParts()" />
+          </div>
+        </div>
+
+        <div class= "row">
+          <div class="col-xl-8 col-sm-6"></div>
+          <div class="col-xl-4 col-sm-6">
+            <div class="text-right">
+              <button type="button" class="btn btn-pill btn-primary" (click)="searchParts()">
+                {{'COMMON.BUTTON.BTN_SEARCH' | translate}}
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-pill btn-warning" (click)="searchClear()">
+                {{'COMMON.BUTTON.BTN_CLEAR' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/FILLTER -->
+
+<!-- TABLE BUHIN MANAGEMENT -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <!-- 追加, CSV読込 -->
+        <div class="row">
+          <div class="col-12">
+            <div class="text-right">
+              <button type="button" class="btn btn-pill btn-warning" (click)="exportCSV()">
+                {{'COMMON.BUTTON.BTN_EXPORT_CSV' | translate}}
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-pill btn-success" (click)="openModalImpCSV()">
+                {{'COMMON.BUTTON.BTN_READ_CSV' | translate}}
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-pill btn-primary" data-toggle="modal"
+                (click)="openModalAdd()">
+                {{'COMMON.BUTTON.BTN_ADD' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- / 追加, CSV読込 -->
+
+        <br />
+
+        <!-- TABLE LIST BUHIN -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered table-striped text-center">
+                <thead>
+                  <tr>
+                    <th style="width:50px; min-width: 50px;">{{'PARTS.TABLE.NO'| translate}}</th>
+                    <th style="width:100px; min-width: 100px;">{{'PARTS.TABLE.PART_ID'| translate}}</th>
+                    <th style="width:150px;min-width: 150px;">{{'PARTS.TABLE.PART_NAME'| translate}}</th>
+                    <th style="width:50px;min-width: 50px;">{{'PARTS.TABLE.PARTS_IMAGE_ID'| translate}}</th>
+                    <th style="width:200px;min-width: 150px;">{{'PARTS.TABLE.PARTS_MODEL_ID'| translate}}</th>
+                    <th style="min-width: 200px;">{{'PARTS.TABLE.PARTS_NAME'| translate}}</th>
+                    <th style="min-width: 100px;">{{'PARTS.TABLE.NECESSARY_QUANTITY'| translate}}</th>
+                    <th style="width:120px; min-width: 120px;">{{'PARTS.TABLE.MSRP'| translate}}</th>
+                    <th style="width:200px; min-width: 200px;">{{'PARTS.TABLE.REMARK'| translate}}</th>
+                    <th style="width:310px; min-width: 310px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let part of parts; let i = index ">
+                    <td class="align-middle">{{ fromNo + i }}</td>
+                    <td class="align-middle">{{ part.part.code_number }}</td>
+                    <td class="align-middle">{{ part.part.name }}</td>
+                    <td class="align-middle">{{ part.parts_image_number }}</td>
+                    <td class="align-middle">{{ part.code_number }}</td>
+                    <td class="align-middle">{{ part.name }}</td>
+                    <td class="align-middle">{{ part.quantity }}</td>
+                    <td class="align-middle">{{ formatCurrency(part.usd_price) }}</td>
+                    <td class="align-middle">{{ part.remark }}</td>
+                    <td class="align-middle">
+                      <button type="button" class="btn btn-sm btn-pill btn-primary" data-toggle="modal"
+                        (click)="openModalDetailsPart(part)">
+                        {{'COMMON.BUTTON.BTN_DETAIL' | translate}}</button>&nbsp;
+                      <button type="button" class="btn btn-sm btn-pill btn-success" data-toggle="modal"
+                      (click)="openModalEdit(part)">
+                         {{'COMMON.BUTTON.BTN_EDIT' | translate}}</button>&nbsp;
+                      <button type="button" class="btn btn-sm btn-pill btn-danger"
+                      (click)="openModalConfirmDel(part)">
+                      {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="!searchObj?.group && !searchObj?.code && !searchObj?.name && !parts?.length">
+                    <td colspan="10">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
+                  </tr>
+                  <tr *ngIf="(searchObj?.group || searchObj?.code || searchObj?.name) && !parts?.length" >
+                    <td colspan="10">{{'COMMON.TABLE.RESULT_NOT_FOUND' | translate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div *ngIf="parts.length" >
+                  <ngb-pagination  [collectionSize]="total" [(page)]="page" [rotate]="true" [pageSize]="pageSize" [maxSize]="5"
+                  (pageChange)="currentPage(page)">
+                  <ng-template ngbPaginationPrevious>{{'COMMON.BUTTON.BTN_PRE' | translate}}</ng-template>
+                  <ng-template ngbPaginationNext>{{'COMMON.BUTTON.BTN_NEXT' | translate}}</ng-template>
+                  <ng-template ngbPaginationEllipsis>...</ng-template>
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /TABLE LIST BUHIN -->
+
+      </div>
+    </div>
+    </div>
+</div>
+<!--/TABLE BUHIN MANAGEMENT -->
+
+<div bsModal #modalAddPart="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="mx-4 mt-5 mb-4">
+      <form [formGroup]="addPartForm" #formDir="ngForm" (ngSubmit)="onSubmitAdd()">
+        <div class="col-12">
+          <div class="row">
+            <!-- <h3 style="margin: -25px 0 20px 15px;">部品追加</h3> -->
+            <h3 style="margin: -25px 0 20px 15px;">{{'PARTS.TITLE.ADD_PARTS' | translate}}</h3>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.PART_ID' | translate}}<span class="text-danger">*</span></label>
+
+              <!-- Group- part- code -->
+              <select class="form-control" id="" formControlName="part_id" >
+                <option value="" selected>{{'PARTS.OPTIONS.CHOOSE_PART_ID' | translate}}</option>
+                <option *ngFor="let gp of groupParts" [ngValue]="gp.id">{{ gp.code_number }} ({{gp.name}})</option>
+              </select>
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.part_id.invalid && formAdd.part_id.dirty) ||
+                formAdd.part_id.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.part_id.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.PART_ID.REQUIRE' | translate}}
+                </small>
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.PARTS_IMAGE_ID' | translate}}<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="parts_image_number" placeholder=""
+              (keyup)="existed_image_number = false"
+              value=""
+              InputFilterDirective pattern="(^\d+(\-)?(\d+)?)$" />
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.parts_image_number.invalid && formAdd.parts_image_number.dirty) ||
+                formAdd.parts_image_number.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.parts_image_number.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.REQUIRE' | translate}}
+                </small>
+                <small *ngIf="formAdd.parts_image_number.errors?.min" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.MIN' | translate}}
+                </small>
+                <small *ngIf="formAdd.parts_image_number.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.MAX' | translate}}
+                </small>
+                <small *ngIf="isAddSubmitted && existed_image_number" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.DUPLICATE_ID' | translate}}
+                </small>
+
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.PARTS_MODEL_ID' | translate}}<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="" formControlName="code_number" (keyup)="existed_code_number = false;" />
+              <!-- VALIDATE FORM PART CODE -->
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.code_number.invalid && formAdd.code_number.dirty) ||
+                formAdd.code_number.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.code_number.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.REQUIRE' | translate}}
+                </small>
+                <small *ngIf="formAdd.code_number.errors?.pattern" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.PATTERN' | translate}}
+                </small>
+                <small *ngIf="formAdd.code_number.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.MAX' | translate}}
+                </small>
+                <small *ngIf="isAddSubmitted && existed_code_number" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.DUPLICATE_ID' | translate}}
+                </small>
+
+              </div>
+              <!-- /VALIDATE FORM PART CODE -->
+            </div>
+
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.PARTS_NAME' | translate}}<span class="text-danger">*</span></label>
+              <input class="form-control"  type="text"  placeholder="" formControlName="name" />
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.name.invalid && formAdd.name.dirty) ||
+                formAdd.name.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.name.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_NAME.REQUIRE' | translate}}
+                </small>
+                <small *ngIf="formAdd.name.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.PARTS_NAME.MAX' | translate}}
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.NECESSARY_QUANTITY' | translate}}<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" pattern="\d*" formControlName="quantity" InputFilterDirective pattern="^\d+$" value="" />
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.quantity.invalid && formAdd.quantity.dirty) ||
+                formAdd.quantity.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.quantity.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.REQUIRE' | translate}}
+                </small>
+                <small *ngIf="formAdd.quantity.errors?.min" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.MIN' | translate}}
+                </small>
+                <small *ngIf="formAdd.quantity.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.MAX' | translate}}
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.MSRP' | translate}}<span class="text-danger">*</span></label>
+              <input type="text" class="form-control"  formControlName="usd_price" placeholder=""
+              InputFilterDirective pattern="^\d*\.?\d*$"
+              value=""
+              />
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.usd_price.invalid && formAdd.usd_price.dirty) ||
+                formAdd.usd_price.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.usd_price.errors?.required" class="help-block text-danger">
+                  {{'PARTS.FORM.MESSAGE.MSRP.REQUIRE' | translate}}
+                </small>
+                <small *ngIf="formAdd.usd_price.errors?.min" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.MSRP.MIN' | translate}}
+                </small>
+                <small *ngIf="formAdd.usd_price.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.MSRP.MAX' | translate}}
+                </small>
+
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.REMARK' | translate}}</label>
+              <input type="text" class="form-control" formControlName="remark" placeholder="" />
+              <div [style.visibility]="isAddSubmitted ||
+                (formAdd.remark.invalid && formAdd.remark.dirty) ||
+                formAdd.remark.touched ? 'visible' : 'hidden'" class="error-message">
+                <small *ngIf="formAdd.remark.errors?.maxlength" class="help-block  text-danger">
+                  {{'PARTS.FORM.MESSAGE.REMARK.MAX' | translate}}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="submit" class="btn mr-2 btn-pill btn-primary" >
+            {{'COMMON.BUTTON.BTN_ADD' | translate}}
+          </button>
+          <button type="button" class="btn btn-pill btn-light" (click)="closeModalAdd();">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #modalEditPart="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4">
+        <div class="col-12">
+          <form [formGroup]="editPartForm" #formDir="ngForm" (ngSubmit)="onSubmitUpdate()" >
+          <div class="row">
+            <!-- <h3 style="margin: -25px 0 20px 15px;">部品編集</h3> -->
+              <h3 style="margin: -25px 0 20px 15px;">{{'PARTS.TITLE.EDIT_PARTS' | translate}}</h3>
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.PART_ID' | translate}}<span class="text-danger">*</span></label>
+                <!-- Group- part- code -->
+                <select class="form-control" id="" formControlName="part_id" >
+                  <option value=""  selected>{{'PARTS.OPTIONS.CHOOSE_PART_ID' | translate}}</option>
+                  <option *ngFor="let gp of groupParts" [ngValue]="gp.id">{{ gp.code_number }} ({{gp.name}})</option>
+                </select>
+                <div [style.visibility]="isEditSubmitted ||
+                (formAdd.part_id.invalid && formAdd.part_id.dirty) ||
+                formAdd.part_id.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.part_id.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.PART_ID.REQUIRE' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.PARTS_IMAGE_ID' | translate}}<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="parts_image_number" value="1" placeholder="" (keyup)="existed_image_number = false;" InputFilterDirective pattern="(^\d+(\-)?(\d+)?)$" />
+                <div [style.visibility]="isEditSubmitted ||
+                (formEdit.parts_image_number.invalid && formEdit.parts_image_number.dirty) ||
+                formEdit.parts_image_number.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.parts_image_number.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.parts_image_number.errors?.min" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.MIN' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.parts_image_number.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.MAX' | translate}}
+                  </small>
+                  <small *ngIf="isEditSubmitted && existed_image_number" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_IMAGE_ID.DUPLICATE_ID' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.PARTS_MODEL_ID' | translate}}<span class="text-danger">*</span></label>
+                <input type="text" class="form-control"  formControlName="code_number" placeholder="" (keyup)="existed_code_number = false;"   />
+                <div [style.visibility]="isEditSubmitted ||
+                (formEdit.code_number.invalid && formEdit.code_number.dirty) ||
+                formEdit.code_number.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.code_number.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.code_number.errors?.pattern" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.PATTERN' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.code_number.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.MAX' | translate}}
+                  </small>
+                  <small *ngIf="isEditSubmitted && existed_code_number" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_MODEL_ID.DUPLICATE_ID' | translate}}
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.PARTS_NAME' | translate}}<span class="text-danger">*</span></label>
+                <input class="form-control"  type="text"  formControlName="name" placeholder=""/>
+                <div [style.visibility]="isEditSubmitted ||
+                (formEdit.name.invalid && formEdit.name.dirty) ||
+                formEdit.name.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.name.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_NAME.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.name.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.PARTS_NAME.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.NECESSARY_QUANTITY' | translate}}<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="quantity" InputFilterDirective pattern="^\d+$"  />
+                <div [style.visibility]="isEditSubmitted ||
+                (formEdit.quantity.invalid && formEdit.quantity.dirty) ||
+                formEdit.quantity.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.quantity.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.quantity.errors?.min" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.MIN' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.quantity.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.NECESSARY_QUANTITY.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.MSRP' | translate}}</label>
+                <input type="text" class="form-control" formControlName="usd_price" placeholder=""
+                InputFilterDirective pattern="^\d*\.?\d*$"
+                 />
+                 <div [style.visibility]="isEditSubmitted ||
+                 (formEdit.usd_price.invalid && formEdit.usd_price.dirty) ||
+                 formEdit.usd_price.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.usd_price.errors?.required" class="help-block text-danger">
+                    {{'PARTS.FORM.MESSAGE.MSRP.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.usd_price.errors?.min" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.MSRP.REQUIRE' | translate}}
+                  </small>
+                  <small *ngIf="formEdit.usd_price.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.MSRP.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label for="vat">{{'PARTS.LABEL.REMARK' | translate}}</label>
+                <input type="text" class="form-control" formControlName="remark" placeholder=""/>
+                <div [style.visibility]="isEditSubmitted ||
+                 (formEdit.remark.invalid && formEdit.remark.dirty) ||
+                 formEdit.remark.touched ? 'visible' : 'hidden'" class="error-message">
+                  <small *ngIf="formEdit.remark.errors?.maxlength" class="help-block  text-danger">
+                    {{'PARTS.FORM.MESSAGE.REMARK.MAX' | translate}}
+                  </small>
+                </div>
+              </div>
+
+
+            </div>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="submit" class="btn mr-2 btn-pill btn-success" >
+              {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-pill btn-light" (click)="closeModalEdit()">
+              {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #modalDetailsPart="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+  <div style="max-width: 800px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4">
+        <div class="col-12">
+          <form [formGroup]="detailPartsForm" #formDir="ngForm" (ngSubmit)="onSubmitUpdate()" >
+          <div class="row">
+            <h3 style="margin: -25px 0 20px 15px;">{{'PARTS.TITLE.DETAIL_PARTS' | translate}}</h3>
+
+            <div class="form-group col-12" disabled="false">
+              <label for="vat">{{'PARTS.LABEL.PART_ID' | translate}}</label>
+              <select class="form-control" formControlName="part_id" disabled >
+                <option *ngFor="let gp of groupParts" [ngValue]="gp.id">{{ gp.code_number }}</option>
+              </select>
+            </div>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.PARTS_IMAGE_ID' | translate}}</label>
+              <input type="text" class="form-control" disabled formControlName="parts_image_number" />
+            </div>
+            <div class="form-group col-12">
+              <label for="street">{{'PARTS.LABEL.PARTS_MODEL_ID' | translate}}</label>
+              <input type="text" class="form-control" disabled formControlName="code_number" />
+            </div>
+            <div class="form-group col-12">
+              <label for="date">{{'PARTS.LABEL.PARTS_NAME' | translate}}</label>
+              <input class="form-control" type="text" disabled formControlName="name" />
+            </div>
+            <div class="form-group col-12">
+              <label for="date">{{'PARTS.LABEL.NECESSARY_QUANTITY' | translate}}</label>
+              <input class="form-control" type="text" disabled formControlName="quantity" />
+            </div>
+            <div class="form-group col-12">
+              <label for="postal-code">{{'PARTS.LABEL.MSRP' | translate}}</label>
+              <input type="text" class="form-control"  disabled formControlName="usd_price" />
+            </div>
+            <div class="form-group col-12">
+              <label for="vat">{{'PARTS.LABEL.REMARK' | translate}}</label>
+              <input type="text" class="form-control" disabled  formControlName="remark" />
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="button" class="btn btn-pill btn-light" (click)="modalDetailsPart.hide()">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div bsModal #modalConfirmDel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div style="max-width: 500px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4 text-center">
+        <span class="modal-title">{{'PARTS.FORM.MESSAGE.CONFIRM.DELETE_PARTS' | translate}}</span>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="button" class="width-btn btn mr-2 btn-pill btn-danger" (click)="deleteParts()">
+            {{'COMMON.BUTTON.BTN_DELETE' | translate}}
+          </button>
+          <button type="button" class="width-btn btn   btn-pill btn-light" (click)="modalConfirmDel.hide()">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<app-dialog></app-dialog>
+<app-dialog-csv (change)="uploadCSVDone($event)"></app-dialog-csv>
+<ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

@@ -1,0 +1,83 @@
+<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true" [asideMenuToggler]="false"
+  [mobileAsideMenuToggler]="false" [navbarBrandFull]="{
+    src: 'assets/img/brand/nav_logo.png',
+    width: 92.3,
+    height: 35,
+    alt: 'Like A Local Logo'
+  }" [navbarBrandMinimized]="{
+    src: 'assets/favicon.ico',
+    width: 40,
+    height: 40,
+    alt: 'Like A Local Logo'
+  }" [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
+  <!-- <ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Dashboard</a>
+    </li>
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Users</a>
+    </li>
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Settings</a>
+    </li>
+  </ul> -->
+  <ul class="nav navbar-nav ml-auto">
+    <li class="breadcrumb-menu d-md-down-none">
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <!-- <button class="btn" (click)="switchLang()">
+        <i class="fa fa-language"> </i>
+        <br/>{{'COMMON.BUTTON.BTN_ML' | translate}}
+      </button> -->
+        <button class="btn btn-menu" (click)="logOutModal.show()">
+          <i class="fa fa-sign-out" aria-hidden="true"> </i>
+          <br />
+          {{'COMMON.BUTTON.BTN_LOGOUT' | translate}}
+        </button>
+      </div>
+    </li>
+  </ul>
+</app-header>
+
+<div class="app-body">
+  <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized"
+    (minimizedChange)="toggleMinimize($event)">
+    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+    </cui-breadcrumb>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.container-fluid -->
+  </main>
+</div>
+
+<!-- DIALOG CONFIRM LOGOUT -->
+<div bsModal #logOutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div style="max-width: 500px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4 text-center">
+        <span class="modal-title" >{{'DEFAULT_LAYOUT.CONFIRM.LOG_OUT' | translate}}</span>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="button" class="width-btn btn mr-2  btn-pill btn-danger"
+            (click)="logOutModal.hide();logOut()">
+            {{'COMMON.BUTTON.BTN_LOGOUT' | translate}}
+          </button>
+          <button type="button" class="width-btn btn btn-pill btn-light"
+            (click)="logOutModal.hide();">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /DIALOG CONFIRM LOGOUT -->

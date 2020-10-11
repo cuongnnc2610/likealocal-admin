@@ -1,0 +1,35 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <ckeditor [(ngModel)]="data" required [config]="ckeConfig" debounce="500" (editorChange)="onEditorChange($event)"></ckeditor>
+          <div class="pt-4 d-flex justify-content-center">
+            <button type="button" class="btn mr-2 btn-pill btn-success" (click)="openModalConfirmUpdate()">
+              {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalConfirmUpdate="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div style="max-width: 500px !important;" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="mx-4 mt-5 mb-4 text-center">
+        <span class="modal-title">{{'TERM_OF_SERVICE.MESSAGE.CONFIRM.UPDATE_TERM_OF_SERVICE' | translate}}</span>
+        <div class="pt-4 d-flex justify-content-center">
+          <button type="button" class="btn mr-2 btn-pill btn-success" (click)="update()">
+            {{'COMMON.BUTTON.BTN_UPDATE' | translate}}
+          </button>
+          <button type="button" class="btn btn-pill btn-light" (click)="modalConfirmUpdate.hide()">
+            {{'COMMON.BUTTON.BTN_CANCEL' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-dialog></app-dialog>
+<ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
