@@ -1,31 +1,31 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Category } from '../../_models';
+import { Transport } from '../../_models';
 import {
   FormGroup,
   Validators,
   FormControl,
 } from "@angular/forms";
-import { CategoryService } from '../../_services';
+import { TransportService } from '../../_services';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DialogComponent } from '../../components';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-category',
+  selector: 'app-transport',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
   @ViewChild("labelImport") labelImport: ElementRef;
-  @ViewChild('modalAddCategory') modalAddCategory: ModalDirective;
-  @ViewChild('modalEditCategory') modalEditCategory: ModalDirective;
-  @ViewChild('modalConfirmRemoveCategory') modalConfirmRemoveCategory: ModalDirective;
+  @ViewChild('modalAddTransport') modalAddTransport: ModalDirective;
+  @ViewChild('modalEditTransport') modalEditTransport: ModalDirective;
+  @ViewChild('modalConfirmRemoveTransport') modalConfirmRemoveTransport: ModalDirective;
   @ViewChild(DialogComponent) dialog: DialogComponent;
   
   public message: string;
   public searchBox: string = null;
-  public categories: Category[];  
+  public transports: Transport[];  
   public total: any; // total number of users
   public pageSize: number; // The number of items per page.
   public page: number = 1; //The current page. Default is 1
@@ -35,16 +35,16 @@ export class IndexComponent implements OnInit {
   public fileToUpload: File = null;
   
   constructor(
-    private CategoryService: CategoryService,
+    private TransportService: TransportService,
     public translate: TranslateService,
     private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
     this.spinner.show();
-    this.categories = [];
-    this.category = {};
-    this.getCategories();
+    this.transports = [];
+    this.transport = {};
+    this.getTransports();
     this.translateLang();
   }
 
@@ -60,7 +60,7 @@ export class IndexComponent implements OnInit {
   //PAGINATION
   currentPage(data: any) {
     this.spinner.show();
-    this.getCategories(data);
+    this.getTransports(data);
   }
 
   orderType: number = 1;
@@ -72,11 +72,11 @@ export class IndexComponent implements OnInit {
     this.currentPage(1);
   }
 
-  getCategories(numberPage: number = 1) {    
-    this.CategoryService.getCategories(this.searchInputForm.controls, this.orderType).subscribe(
+  getTransports(numberPage: number = 1) {    
+    this.TransportService.getTransports(this.searchInputForm.controls, this.orderType).subscribe(
       (result) => {
         this.spinner.hide();
-        this.categories = result.data.categories;
+        this.transports = result.data.transports;
       },
       (error) => {
         this.spinner.hide();
@@ -85,25 +85,24 @@ export class IndexComponent implements OnInit {
     );
   }
 
-  category: any;
-  getCategory(category: any) {
-    this.category = category;
-    this.editCategoryForm.setValue({
-      name: category.name, 
+  transport: any;
+  getTransport(transport: any) {
+    this.transport = transport;
+    this.editTransportForm.setValue({
+      name: transport.name, 
     });
   }
 
-  deleteCategory() {
+  deleteTransport() {
     this.spinner.show();
-    this.CategoryService.deleteCategory(this.category).subscribe(
+    this.TransportService.deleteTransport(this.transport).subscribe(
       (result) => {
         this.spinner.hide();
         if (result.code === 20001) {
-          this.modalConfirmRemoveCategory.hide();
-          this.dialog.show("The category has been deleted", "success");
-          this.getCategories(this.page);
+          this.modalConfirmRemoveTransport.hide();
+          this.dialog.show("The transport has been deleted", "success");
+          this.getTransports(this.page);
         } else {
-          this.modalConfirmRemoveCategory.hide();
           this.dialog.show(result.message, 'error');
         } 
       },
@@ -114,22 +113,22 @@ export class IndexComponent implements OnInit {
     );
   }
 
-  createCategory(){
-    if (this.addCategoryForm.invalid) {
-      this.isAddCategorySubmitted = true;
+  createTransport(){
+    if (this.addTransportForm.invalid) {
+      this.isAddTransportSubmitted = true;
       return;
     }
-    const category = this.editCategoryForm.value;
+    const transport = this.editTransportForm.value;
     this.spinner.show();
-    this.CategoryService.createCategory(category)
+    this.TransportService.createTransport(transport)
     .subscribe(
       (result) => {
         this.spinner.hide();
         if (result.code === 20001) {
-          this.modalAddCategory.hide();
-          this.dialog.show("The category has been added", "success");
-          this.getCategories(this.page);
-          this.clearAddCategoryForm();
+          this.modalAddTransport.hide();
+          this.dialog.show("The transport has been added", "success");
+          this.getTransports(this.page);
+          this.clearAddTransportForm();
         } else {
           this.dialog.show(result.message, 'error');
         }
@@ -141,23 +140,23 @@ export class IndexComponent implements OnInit {
     );
   }
 
-  editCategory(){
-    if (this.editCategoryForm.invalid) {
-      this.isEditCategorySubmitted = true;
+  editTransport(){
+    if (this.editTransportForm.invalid) {
+      this.isEditTransportSubmitted = true;
       return;
     }
-    const category = this.editCategoryForm.value;
-    category.category_id = this.category.category_id;
+    const transport = this.editTransportForm.value;
+    transport.transport_id = this.transport.transport_id;
     this.spinner.show();
-    this.CategoryService.updateCategory(category)
+    this.TransportService.updateTransport(transport)
     .subscribe(
       (result) => {
         this.spinner.hide();
         if (result.code === 20001) {
-          this.modalEditCategory.hide();
-          this.dialog.show("The category has been edited", "success");
-          this.getCategories(this.page);
-          this.clearEditCategoryForm();
+          this.modalEditTransport.hide();
+          this.dialog.show("The transport has been edited", "success");
+          this.getTransports(this.page);
+          this.clearEditTransportForm();
         } else {
           this.dialog.show(result.message, 'error');
         }
@@ -170,26 +169,26 @@ export class IndexComponent implements OnInit {
   }
 
   // ADD, EDIT FORM
-  isAddCategorySubmitted: boolean = false;
-  isEditCategorySubmitted: boolean = false;
-  categoryForm = new FormGroup({
+  isAddTransportSubmitted: boolean = false;
+  isEditTransportSubmitted: boolean = false;
+  transportForm = new FormGroup({
     name: new FormControl("", [Validators.required,Validators.maxLength(255)]),
   });
-  addCategoryForm = this.categoryForm;
-  editCategoryForm = this.categoryForm;
-  clearAddCategoryForm() {
-    this.addCategoryForm.reset();
-    this.addCategoryForm.setValue({
+  addTransportForm = this.transportForm;
+  editTransportForm = this.transportForm;
+  clearAddTransportForm() {
+    this.addTransportForm.reset();
+    this.addTransportForm.setValue({
       name: '',
     });
-    this.isAddCategorySubmitted = false;
+    this.isAddTransportSubmitted = false;
   }
-  clearEditCategoryForm() {
-    this.editCategoryForm.reset();
-    this.editCategoryForm.setValue({
+  clearEditTransportForm() {
+    this.editTransportForm.reset();
+    this.editTransportForm.setValue({
       name: '',
     });
-    this.isEditCategorySubmitted = false;
+    this.isEditTransportSubmitted = false;
   }
 
   // SEARCH FORM

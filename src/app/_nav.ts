@@ -11,21 +11,11 @@ export const navItems: INavData[] = [
     url: '/order-management',
     icon: 'fa fa-list-alt',
   },
-  {
-    name: 'Part Management',
-    url: '/part-management',
-    icon: 'fa fa-cogs',
-  },
-  {
-    name: 'Parts Management',
-    url: '/parts-management',
-    icon: 'fa fa-list-ol',
-  },
-  {
-    name: 'User Management',
-    url: '/user-management',
-    icon :'fa fa-users'
-  },
+  // {
+  //   name: 'User Management',
+  //   url: '/user-management',
+  //   icon :'fa fa-users'
+  // },
   {
     name: 'Terms Of Use',
     url: '/terms-of-use',
@@ -38,19 +28,46 @@ export const navItems: INavData[] = [
     class:'menu_notification'
   },
   {
+    name: 'User',
+    url: '/user',
+    icon: 'fa fa-users',
+  },
+  {
+    name: 'Host Request',
+    url: '/host-request',
+    icon: 'fa fa-exclamation-circle',
+  },
+  {
     name: 'Tour',
     url: '/tour',
-    icon: 'fa fa-question-circle-o'
+    icon: 'fa fa-map-signs'
+  },
+  {
+    name: 'Review',
+    url: '/review',
+    icon: 'fa fa-comments',
+    children: [
+      {
+        name: 'Tours Review',
+        url: '/tours-review',
+        icon: 'fa fa-map-signs'
+      },
+      {
+        name: 'Hosts Review',
+        url: '/hosts-review',
+        icon: 'fa fa-male'
+      },
+    ],
   },
   {
     name: 'Coupon',
     url: '/coupon',
-    icon: 'fa fa-question-circle-o'
+    icon: 'fa fa-tags'
   },
   {
     name: 'Subscriber',
     url: '/subscriber',
-    icon: 'fa fa-question-circle-o'
+    icon: 'fa fa-user-plus'
   },
   {
     name: 'Common',
@@ -59,18 +76,18 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Benefit',
-        url: '/common/benefit',
-        icon: 'icon-puzzle'
+        url: '/benefit',
+        icon: 'fa fa-ticket'
       },
       {
         name: 'Category',
-        url: '/common/category',
-        icon: 'icon-puzzle'
+        url: '/category',
+        icon: 'fa fa-list-alt'
       },
       {
         name: 'Transport',
-        url: '/common/transport',
-        icon: 'icon-puzzle'
+        url: '/transport',
+        icon: 'fa fa-subway'
       },
     ],
   }

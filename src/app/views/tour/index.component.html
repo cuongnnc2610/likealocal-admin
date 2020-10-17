@@ -141,7 +141,7 @@
 
 <div bsModal #modalEditTour="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
-  <div style="max-width: 1600px !important;" class="modal-dialog modal-dialog-centered" role="document">
+  <div style="max-width: 1200px !important;" class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form>
         <div class="mx-4 mt-5 mb-4">
@@ -149,112 +149,196 @@
             <div class="row">
               <h3 style="margin: -25px 0 20px 15px;">Update Status Tour</h3>
             </div>
-            <div class="row">              
-              <div class="form-group col-6">
-                <b>Name: </b>{{tour.name}}
-              </div>
-              <div class="form-group col-6">
-                <b>Description: </b>
-                <textarea type="text" rows="4" class="form-control" value="{{tour.description}}" disabled></textarea>
-              </div>
-            </div>
-            <div class="row">              
-              <div class="form-group col-6">
-                <b>Description: </b>
-                <textarea type="text" rows="4" class="form-control" value="{{tour.description}}" disabled></textarea>
-              </div>
-            </div>
             <div class="row">
-              <!-- <h3 style="margin: -25px 0 20px 15px;">Update Status Tour</h3> -->
-              <div class="form-group col-12 has-error">
-                <label for="street">Name</label>
-                <input type="text" class="form-control" value="{{tour.name}}" disabled>
+              <div class="col-6">
+                <div class="row">
+                  <!-- <h3 style="margin: -25px 0 20px 15px;">Update Status Tour</h3> -->
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Name</label>
+                    <input type="text" class="form-control" value="{{tour.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Description</label>
+                    <textarea type="text" rows="4" class="form-control" value="{{tour.description}}" disabled></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">City</label>
+                    <input type="text" class="form-control" value="{{tour.city.name}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Country</label>
+                    <input type="text" class="form-control" value="{{tour.city.country.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Category</label>
+                    <input type="text" class="form-control" value="{{tour.category.name}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Transport</label>
+                    <input type="text" class="form-control" value="{{tour.transport.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Duration</label>
+                    <input type="text" class="form-control" value="{{tour.duration}}h" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Max people</label>
+                    <input type="text" class="form-control" value="{{tour.max_people}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">List price</label>
+                    <input type="text" class="form-control" value="{{tour.list_price}}$" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Sale price</label>
+                    <input type="text" class="form-control" value="{{tour.sale_price}}$" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Rating</label>
+                    <input type="text" class="form-control" value="{{tour.rating}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Completed Orders</label>
+                    <input type="text" class="form-control" value="{{tour.number_of_completed_orders}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Host Email</label>
+                    <input type="text" class="form-control" value="{{tour.host.email}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Shown</label>
+                    <input type="text" class="form-control" value="{{tour.is_shown ? 'Yes' : 'No'}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Meeting Address</label>
+                    <textarea type="text" rows="2" class="form-control" value="{{tour.meeting_address}}" disabled></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Cover Image</label><br>
+                  </div>
+                  <div class="form-group col-12 has-error text-center">
+                    <img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" height=200px>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Status</label>
+                    <input type="text" class="form-control" value="{{tour.status == 2 ? 'Published' : tour.status == 1 ? 'Rejected' : 'Unpublished'}}" disabled>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-12 has-error">
-                <label for="street">Description</label>
-                <textarea type="text" rows="4" class="form-control" value="{{tour.description}}" disabled></textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">City</label>
-                <input type="text" class="form-control" value="{{tour.city.name}}" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Country</label>
-                <input type="text" class="form-control" value="{{tour.city.country.name}}" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">Category</label>
-                <input type="text" class="form-control" value="{{tour.category.name}}" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Transport</label>
-                <input type="text" class="form-control" value="{{tour.transport.name}}" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">Duration</label>
-                <input type="text" class="form-control" value="{{tour.duration}}h" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Max people</label>
-                <input type="text" class="form-control" value="{{tour.max_people}}" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">List price</label>
-                <input type="text" class="form-control" value="{{tour.list_price}}$" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Sale price</label>
-                <input type="text" class="form-control" value="{{tour.sale_price}}$" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">Rating</label>
-                <input type="text" class="form-control" value="{{tour.rating}}" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Completed Orders</label>
-                <input type="text" class="form-control" value="{{tour.number_of_completed_orders}}" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6 has-error">
-                <label for="street">Host Email</label>
-                <input type="text" class="form-control" value="{{tour.host.email}}" disabled>
-              </div>
-              <div class="form-group col-6 has-error">
-                <label for="street">Shown</label>
-                <input type="text" class="form-control" value="{{tour.is_shown ? 'Yes' : 'No'}}" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-12 has-error">
-                <label for="street">Meeting Address</label>
-                <textarea type="text" rows="2" class="form-control" value="{{tour.meeting_address}}" disabled></textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-12 has-error">
-                <label for="street">Cover Image</label><br>
-              </div>
-              <div class="form-group col-12 has-error text-center">
-                <img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" height=200px>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-12 has-error">
-                <label for="street">Status</label>
-                <input type="text" class="form-control" value="{{tour.status == 2 ? 'Published' : tour.status == 1 ? 'Rejected' : 'Unpublished'}}" disabled>
+              <div class="col-6">
+                <div class="row">
+                  <!-- <h3 style="margin: -25px 0 20px 15px;">Update Status Tour</h3> -->
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Name</label>
+                    <input type="text" class="form-control" value="{{tour.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Description</label>
+                    <textarea type="text" rows="4" class="form-control" value="{{tour.description}}" disabled></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">City</label>
+                    <input type="text" class="form-control" value="{{tour.city.name}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Country</label>
+                    <input type="text" class="form-control" value="{{tour.city.country.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Category</label>
+                    <input type="text" class="form-control" value="{{tour.category.name}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Transport</label>
+                    <input type="text" class="form-control" value="{{tour.transport.name}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Duration</label>
+                    <input type="text" class="form-control" value="{{tour.duration}}h" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Max people</label>
+                    <input type="text" class="form-control" value="{{tour.max_people}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">List price</label>
+                    <input type="text" class="form-control" value="{{tour.list_price}}$" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Sale price</label>
+                    <input type="text" class="form-control" value="{{tour.sale_price}}$" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Rating</label>
+                    <input type="text" class="form-control" value="{{tour.rating}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Completed Orders</label>
+                    <input type="text" class="form-control" value="{{tour.number_of_completed_orders}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Host Email</label>
+                    <input type="text" class="form-control" value="{{tour.host.email}}" disabled>
+                  </div>
+                  <div class="form-group col-6 has-error">
+                    <label for="street">Shown</label>
+                    <input type="text" class="form-control" value="{{tour.is_shown ? 'Yes' : 'No'}}" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Meeting Address</label>
+                    <textarea type="text" rows="2" class="form-control" value="{{tour.meeting_address}}" disabled></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Cover Image</label><br>
+                  </div>
+                  <div class="form-group col-12 has-error text-center">
+                    <img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" height=200px>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12 has-error">
+                    <label for="street">Status</label>
+                    <input type="text" class="form-control" value="{{tour.status == 2 ? 'Published' : tour.status == 1 ? 'Rejected' : 'Unpublished'}}" disabled>
+                  </div>
+                </div>
               </div>
             </div>
           <!-- </div> -->

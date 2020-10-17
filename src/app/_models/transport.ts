@@ -1,5 +1,5 @@
 export class Transport {
-    transportId: number;
+    transport_id: number;
     name: string;
     createdAt?: string;
     updatedAt?: string;

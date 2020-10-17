@@ -4,6 +4,7 @@ import { City } from './city';
 import { User } from './user';
 
 export class Tour {
+    tour_id: number;
     name: string;
     description: string;
     sale_price: number;

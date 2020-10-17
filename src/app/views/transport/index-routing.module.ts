@@ -7,7 +7,7 @@ const routes: Routes = [
   {
         path:'',
         data: {
-          title: 'Part Management'
+          title: 'Transport'
         },
         component: IndexComponent
   }

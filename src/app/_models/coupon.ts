@@ -1,10 +1,10 @@
 export class Coupon {
-    couponId: number;
+    coupon_id: number;
     code: string;
     discount: number;
-    totalQuantity: number;
-    usedQuantity: number;
-    isAvailable: boolean;
+    total_quantity: number;
+    used_quantity: number;
+    is_available: boolean;
     createdAt?: string;
     updatedAt?: string;
 }

@@ -1,5 +1,5 @@
 export class Benefit {
-    benefitId: number;
+    benefit_id: number;
     name: string;
     createdAt?: string;
     updatedAt?: string;

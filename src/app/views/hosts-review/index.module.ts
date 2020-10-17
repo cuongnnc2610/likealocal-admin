@@ -5,22 +5,15 @@ import { IndexComponent } from './index.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-//Import lib translate
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { DialogModule } from '../../components/dialog/dialog.module';
-
-//Import module pagination
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import { InputFilterPartDirective, FileTypeValidator } from '../../_directive';
+import { DialogModule } from '../../components';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
     IndexComponent,
-    InputFilterPartDirective,
-    FileTypeValidator
   ],
   imports: [
     CommonModule,

@@ -1,28 +1,26 @@
 import { NgModule } from '@angular/core';
-import { IndexComponent } from './index.component';
-import { IndexRoutingModule } from './index-routing.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
-
 import { CommonModule } from '@angular/common';
-//Import module pagination
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from '../../components/dialog/dialog.module';
-import { DialogCSVModule } from '../../components/dialog-csv/dialog-csv.module';
-import { InputFilterDirective } from '../../_directive';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { IndexRoutingModule } from './index-routing.module';
+import { IndexComponent } from './index.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DialogModule } from '../../components';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
+  declarations: [
+    IndexComponent,
+  ],
   imports: [
     CommonModule,
     IndexRoutingModule,
     NgbPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -30,11 +28,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
         deps: [HttpClient]
       }
     }),
+    ModalModule.forRoot(),
     DialogModule,
-    DialogCSVModule,
     NgxSpinnerModule
-  ],
-  declarations: [ IndexComponent, InputFilterDirective ]
+  ]
 })
 export class IndexModule { }
 

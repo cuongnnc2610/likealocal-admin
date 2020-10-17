@@ -16,3 +16,6 @@ export * from './category.service';
 export * from './transport.service';
 export * from './subscriber.service';
 export * from './systemSetting.service';
+export * from './hosts-review.service';
+export * from './tours-review.service';
+export * from './user.service';

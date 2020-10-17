@@ -69,16 +69,6 @@ export const routes: Routes = [
         loadChildren: () => import('./views/users-management/base.module').then(m => m.BaseModule)
       },
       {
-        path: 'part-management',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/part-management/index.module').then(m => m.IndexModule)
-      },
-      {
-        path: 'parts-management',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/parts-management/index.module').then(m => m.IndexModule)
-      },
-      {
         path: 'order-management',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/orders-management/index/index.module').then(m => m.IndexModule),
@@ -104,9 +94,29 @@ export const routes: Routes = [
         loadChildren: () => import('./views/notifications-management/index.module').then(m => m.IndexModule)
       },
       {
+        path: 'user',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/user/index.module').then(m => m.IndexModule)
+      },
+      {
+        path: 'host-request',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/host-request/index.module').then(m => m.IndexModule)
+      },
+      {
         path: 'tour',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/tour/index.module').then(m => m.IndexModule)
+      },
+      {
+        path: 'tours-review',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/tours-review/index.module').then(m => m.IndexModule)
+      },
+      {
+        path: 'hosts-review',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/hosts-review/index.module').then(m => m.IndexModule)
       },
       {
         path: 'coupon',
@@ -119,14 +129,19 @@ export const routes: Routes = [
         loadChildren: () => import('./views/subscriber/index.module').then(m => m.IndexModule)
       },
       {
-        path: 'common/benefit',
+        path: 'benefit',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/benefit/index.module').then(m => m.IndexModule)
       },
       {
-        path: 'common/category',
+        path: 'category',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/category/index.module').then(m => m.IndexModule)
+      },
+      {
+        path: 'transport',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/transport/index.module').then(m => m.IndexModule)
       },
     ]
   },
