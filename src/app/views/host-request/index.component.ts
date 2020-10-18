@@ -5,7 +5,7 @@ import {
   Validators,
   FormControl,
 } from "@angular/forms";
-import { UserService, MasterDataService } from '../../_services';
+import { HostRequestService, MasterDataService } from '../../_services';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DialogComponent } from '../../components';
@@ -35,7 +35,7 @@ export class IndexComponent implements OnInit {
   public fileToUpload: File = null;
   
   constructor(
-    private UserService: UserService,
+    private HostRequestService: HostRequestService,
     private MasterDataService: MasterDataService,
     public translate: TranslateService,
     private spinner: NgxSpinnerService
@@ -74,9 +74,9 @@ export class IndexComponent implements OnInit {
     this.currentPage(1);
   }
 
-  levelOptions = [{value: 2, name: "User"}, {value: 3, name: "Host"}];
+  requestStatusSearchOptions = [{value: "", name: "All"}, {value: 2, name: "Pending"}, {value: 1, name: "Rejected"}];
   getHostRequests(numberPage: number = 1) {    
-    this.UserService.getHostRequests(numberPage, this.searchInputForm.controls, this.orderType).subscribe(
+    this.HostRequestService.getHostRequests(numberPage, this.searchInputForm.controls, this.orderType).subscribe(
       (result) => {
         console.log(result);
         result = result.data;
@@ -131,13 +131,13 @@ export class IndexComponent implements OnInit {
 
   approveOrRejectHostRequest(request_status: number){
     this.spinner.show();
-    this.UserService.approveOrRejectHostRequest(this.user.user_id, request_status)
+    this.HostRequestService.approveOrRejectHostRequest(this.user.user_id, request_status)
     .subscribe(
       (result) => {
         this.spinner.hide();
         if (result.code === 20001) {
           this.modalEditHost.hide();
-          if (request_status === 2) {
+          if (request_status === 0) {
             this.dialog.show("The request has been approved", "success");
           } else {
             this.dialog.show("The request has been rejected", "success");
@@ -202,7 +202,8 @@ export class IndexComponent implements OnInit {
     email: new FormControl("", []),
     country_id: new FormControl("", []),
     city_id: new FormControl("", []),
-    date: new FormControl("", []),
+    updated_at: new FormControl("", []),
+    request_status: new FormControl("", []),
   });
   searchInputForm = this.searchForm;
   clearSearchInputForm() {
@@ -211,7 +212,8 @@ export class IndexComponent implements OnInit {
       email: '',
       country_id: this.countries[0].country_id,
       city_id: '',
-      date: '',
+      updated_at: '',
+      request_status: '',
     });
   }
 }

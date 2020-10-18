@@ -365,7 +365,7 @@ export class IndexComponent implements OnInit {
     city_id: new FormControl("", []),
     level_id: new FormControl(this.levelSearchOptions[0].value, []),
     is_tour_guide: new FormControl(this.isTourGuideOptions[0].value, []),
-    date: new FormControl("", []),
+    created_at: new FormControl("", []),
     is_verified: new FormControl(this.isVerifiedOptions[0].value, []),
   });
   searchInputForm = this.searchForm;
@@ -377,7 +377,7 @@ export class IndexComponent implements OnInit {
       city_id: '',
       level_id: this.levelSearchOptions[0].value,
       is_tour_guide: this.isTourGuideOptions[0].value,
-      date: '',
+      created_at: '',
       is_verified: this.isVerifiedOptions[0].value,
     });
   }

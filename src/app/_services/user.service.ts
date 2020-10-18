@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUsers(numberPage, searchInputForm, orderType) {
-    let date = '';
-    if (searchInputForm.date.value !== '' && searchInputForm.date.value !== null) {      
-      date = searchInputForm.date.value.toISOString().substring(0, 10);
+    let createdAt = '';
+    if (searchInputForm.created_at.value !== '' && searchInputForm.created_at.value !== null) {      
+      createdAt = searchInputForm.created_at.value.toISOString().substring(0, 10);
     }
-    return this.http.get<any>(`${environment.apiUrl}/accounts?page=${numberPage}&email=${searchInputForm.email.value}&user_name=${searchInputForm.user_name.value}&is_tour_guide=${searchInputForm.is_tour_guide.value}&is_verified=${searchInputForm.is_verified.value}&level_id=${searchInputForm.level_id.value}&country_id=${searchInputForm.country_id.value}&city_id=${searchInputForm.city_id.value}&date=${date}&order_type=${orderType}`)
+    return this.http.get<any>(`${environment.apiUrl}/accounts?page=${numberPage}&email=${searchInputForm.email.value}&user_name=${searchInputForm.user_name.value}&is_tour_guide=${searchInputForm.is_tour_guide.value}&is_verified=${searchInputForm.is_verified.value}&level_id=${searchInputForm.level_id.value}&country_id=${searchInputForm.country_id.value}&city_id=${searchInputForm.city_id.value}&created_at=${createdAt}&order_type=${orderType}`)
       .pipe(map((result: any) => {
         return result;
       }));
@@ -50,26 +50,6 @@ export class UserService {
 
   removeAvatar(id: any) {
     return this.http.delete<any>(`${environment.apiUrl}/accounts/avatar/${id}`, {
-    })
-      .pipe(map((result: any) => {
-        return result;
-      }));
-  }
-
-  getHostRequests(numberPage, searchInputForm, orderType) {
-    let date = '';
-    if (searchInputForm.date.value !== '' && searchInputForm.date.value !== null) {      
-      date = searchInputForm.date.value.toISOString().substring(0, 10);
-    }
-    return this.http.get<any>(`${environment.apiUrl}/accounts?page=${numberPage}&email=${searchInputForm.email.value}&user_name=${searchInputForm.user_name.value}&country_id=${searchInputForm.country_id.value}&city_id=${searchInputForm.city_id.value}&date=${date}&request_status=2&order_type=${orderType}`)
-      .pipe(map((result: any) => {
-        return result;
-      }));
-  }
-
-  approveOrRejectHostRequest(id: any, request_status: number) {
-    return this.http.put<any>(`${environment.apiUrl}/accounts/host-request/${id}`, {
-      request_status: request_status,
     })
       .pipe(map((result: any) => {
         return result;

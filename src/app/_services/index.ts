@@ -19,3 +19,4 @@ export * from './systemSetting.service';
 export * from './hosts-review.service';
 export * from './tours-review.service';
 export * from './user.service';
+export * from './host-request.service';

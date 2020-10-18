@@ -26,16 +26,22 @@
                 </select>
               </div>
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
-                <label for="date">Date</label>
+                <label for="updated_at">Date</label>
                 <div class="input-group">
                   <input placeholder="dd/mm/yyyy" #datepickerYMD="bsDatepicker" bsDatepicker autocomplete="off"
-                         [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" id="input-normal" formControlName="date"
+                         [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" id="input-normal" formControlName="updated_at"
                          class="form-control ngx-daterangepicker-action"
                          (ngModelChange)="spinner.show(); getHostRequests();"/>
                   <div class="input-group-append">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
+              </div>
+              <div class="form-group col-xl-3 col-md-6 col-sm-12">
+                <label for="request_status">Request status</label>
+                <select class="form-control" name="request_status" formControlName="request_status" (change)="spinner.show(); getHostRequests();">
+                  <option *ngFor="let requestStatusSearchOption of requestStatusSearchOptions" [value]="requestStatusSearchOption.value">{{requestStatusSearchOption.name}}</option>
+                </select>
               </div>
             </div>
           </form>
@@ -49,7 +55,8 @@
                   <th style="width: 120px; min-width: 120px;">Email<i class="fa fa-sort ml-2" (click)="changeOrderType(5)"></i></th>
                   <th style="width: 120px; min-width: 120px;">City</th>
                   <th style="width: 120px; min-width: 120px;">Country</th>
-                  <th style="width: 100px; min-width: 100px;">Date<i class="fa fa-sort ml-2" (click)="changeOrderType(1)"></i></th>
+                  <th style="width: 100px; min-width: 100px;">Date<i class="fa fa-sort ml-2" (click)="changeOrderType(7)"></i></th>
+                  <th style="width: 100px; min-width: 100px;">Status<i class="fa fa-sort ml-2" (click)="changeOrderType(1)"></i></th>
                   <th style="width: 120px; min-width: 120px;">Actions</th>
                 </tr>
               </thead>
@@ -61,6 +68,10 @@
                   <td style="width: 120px; min-width: 120px;">{{ user.city.name }}</td>
                   <td style="width: 120px; min-width: 120px;">{{ user.city.country.name }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ user.updatedAt | date:'dd/MM/yyyy' }}</td>
+                  <td style="width: 100px; min-width: 100px;">
+                    <span *ngIf="user.request_status === 2" class="badge badge-secondary">Pending</span>
+                    <span *ngIf="user.request_status === 1" class="badge badge-danger">Rejected</span>
+                  </td>
                   <td style="width: 120px; min-width: 120px;">
                     <button type="button" class="btn btn-sm btn-circle btn-warning" data-toggle="modal"
                       (click)="modalEditHost.show(); getUser(user);">
@@ -69,7 +80,7 @@
                   </td>
                 </tr>
                 <tr *ngIf="!users?.length" class="text-center">
-                  <td colspan="7">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
+                  <td colspan="8">{{'COMMON.TABLE.NO_DATA' | translate}}</td>
                 </tr>
               </tbody>
             </table>
@@ -173,10 +184,10 @@
             </div>
           </div>
           <div class="pt-4 d-flex justify-content-center">
-            <button type="submit" class="btn mr-2 btn-pill btn-success" (click)="approveOrRejectHostRequest(2);">
+            <button type="submit" class="btn mr-2 btn-pill btn-success" (click)="approveOrRejectHostRequest(0);">
               Approve
             </button>
-            <button type="submit" class="btn mr-2 btn-pill btn-danger" (click)="approveOrRejectHostRequest(1);">
+            <button *ngIf="user.request_status !== 1" type="submit" class="btn mr-2 btn-pill btn-danger" (click)="approveOrRejectHostRequest(1);">
               Reject
             </button>
             <button type="button" class="btn btn-pill btn-light" (click)="modalEditHost.hide()">
