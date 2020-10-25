@@ -15,4 +15,9 @@ export * from './toursHost';
 export * from './order';
 export * from './toursReview';
 export * from './hostsReview';
+export * from './toursBenefit';
+export * from './toursPlace';
+export * from './toursImage';
+export * from './tour';
+export * from './toursEdit';
 

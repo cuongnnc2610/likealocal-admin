@@ -7,16 +7,6 @@ export const navItems: INavData[] = [
     icon: 'fa fa-list-alt',
   },
   {
-    name: 'Order Management',
-    url: '/order-management',
-    icon: 'fa fa-list-alt',
-  },
-  // {
-  //   name: 'User Management',
-  //   url: '/user-management',
-  //   icon :'fa fa-users'
-  // },
-  {
     name: 'Terms Of Use',
     url: '/terms-of-use',
     icon: 'icon-book-open'
@@ -28,6 +18,11 @@ export const navItems: INavData[] = [
     class:'menu_notification'
   },
   {
+    name: 'Order',
+    url: '/order',
+    icon: 'fa fa-shopping-cart',
+  },
+  {
     name: 'User',
     url: '/user',
     icon: 'fa fa-users',
@@ -35,12 +30,17 @@ export const navItems: INavData[] = [
   {
     name: 'Host Request',
     url: '/host-request',
-    icon: 'fa fa-exclamation-circle',
+    icon: 'fa fa-male',
   },
   {
     name: 'Tour',
     url: '/tour',
     icon: 'fa fa-map-signs'
+  },
+  {
+    name: 'Tours Edit',
+    url: '/tours-edit',
+    icon: 'fa fa-exclamation-circle'
   },
   {
     name: 'Review',

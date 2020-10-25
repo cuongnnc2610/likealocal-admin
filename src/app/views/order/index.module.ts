@@ -1,20 +1,25 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IndexComponent } from './index.component';
 import { IndexRoutingModule } from './index-routing.module';
+import { IndexComponent } from './index.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { DialogModule } from '../../components/dialog/dialog.module';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DialogModule } from '../../components';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
+  declarations: [
+    IndexComponent,
+  ],
   imports: [
-    IndexRoutingModule,
     CommonModule,
+    BsDatepickerModule.forRoot(),
+    IndexRoutingModule,
     NgbPaginationModule,
     FormsModule,
     ReactiveFormsModule,
@@ -28,8 +33,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ModalModule.forRoot(),
     DialogModule,
     NgxSpinnerModule
-  ],
-  declarations: [ IndexComponent ]
+  ]
 })
 export class IndexModule { }
 

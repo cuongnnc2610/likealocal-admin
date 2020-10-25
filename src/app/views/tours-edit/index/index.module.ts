@@ -1,20 +1,27 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IndexComponent } from './index.component';
 import { IndexRoutingModule } from './index-routing.module';
+import { IndexComponent } from './index.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { DialogModule } from '../../components/dialog/dialog.module';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+//Import lib translate
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+//Import module pagination
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { DialogModule } from '../../../components';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
+  declarations: [
+    IndexComponent,
+  ],
   imports: [
-    IndexRoutingModule,
     CommonModule,
+    IndexRoutingModule,
     NgbPaginationModule,
     FormsModule,
     ReactiveFormsModule,
@@ -28,8 +35,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ModalModule.forRoot(),
     DialogModule,
     NgxSpinnerModule
-  ],
-  declarations: [ IndexComponent ]
+  ]
 })
 export class IndexModule { }
 

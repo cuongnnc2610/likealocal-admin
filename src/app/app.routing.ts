@@ -14,11 +14,6 @@ export const routes: Routes = [
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
-  // {
-  //   path: '',
-  //   redirectTo: 'order-management',
-  //   pathMatch: 'full',
-  // },
   {
     path: '404',
     component: P404Component,
@@ -64,26 +59,6 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/index.module').then(m => m.IndexModule)
       },
       {
-        path: 'users-management',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/users-management/base.module').then(m => m.BaseModule)
-      },
-      {
-        path: 'order-management',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/orders-management/index/index.module').then(m => m.IndexModule),
-      },
-      {
-        path: 'order-management/detail',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/orders-management/detail/detail.module').then(m => m.DetailModule),
-      },
-      {
-        path: 'user-management',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/users-management/index/index.module').then(m => m.IndexModule)
-      },
-      {
         path: 'terms-of-use',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/terms-of-use/index.module').then(m => m.IndexModule)
@@ -92,6 +67,11 @@ export const routes: Routes = [
         path: 'notice-management',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/notifications-management/index.module').then(m => m.IndexModule)
+      },
+      {
+        path: 'order',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/order/index.module').then(m => m.IndexModule)
       },
       {
         path: 'user',
@@ -106,7 +86,12 @@ export const routes: Routes = [
       {
         path: 'tour',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./views/tour/index.module').then(m => m.IndexModule)
+        loadChildren: () => import('./views/tour/base.module').then(m => m.BaseModule)
+      },
+      {
+        path: 'tours-edit',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/tours-edit/base.module').then(m => m.BaseModule)
       },
       {
         path: 'tours-review',

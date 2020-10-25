@@ -1,29 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IndexRoutingModule } from './index-routing.module';
-import { IndexComponent } from './index.component';
+import { ChartsModule } from 'ng2-charts';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-//Import lib translate
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { DialogModule } from '../../components/dialog/dialog.module';
-
-//Import module pagination
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import { InputFilterPartDirective, FileTypeValidator } from '../../_directive';
+import { DialogModule } from '../../components';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+import { IndexComponent } from './index.component';
+import { IndexRoutingModule } from './index-routing.module';
 
 @NgModule({
-  declarations: [
-    IndexComponent,
-    InputFilterPartDirective,
-    FileTypeValidator
-  ],
   imports: [
+    FormsModule,
+    IndexRoutingModule,
+    ChartsModule,
+    BsDropdownModule,
+    ButtonsModule.forRoot(),
     CommonModule,
+    BsDatepickerModule.forRoot(),
     IndexRoutingModule,
     NgbPaginationModule,
     FormsModule,
@@ -38,7 +39,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ModalModule.forRoot(),
     DialogModule,
     NgxSpinnerModule
-  ]
+  ],
+  declarations: [ IndexComponent ]
 })
 export class IndexModule { }
 

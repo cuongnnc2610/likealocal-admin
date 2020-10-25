@@ -30,7 +30,7 @@ export class User {
   level: Level = new Level();
   city: City = new City();
   usersLanguages: UsersLanguage[] = [];
-  languages: string;
+  languages: string = '';
   orders: Order[] = [];
   tours: Tour[]= [];
 }
