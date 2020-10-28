@@ -3,40 +3,40 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form [formGroup]="searchInputForm" (ngSubmit)="spinner.show(); getToursByFilter();">
+          <form [formGroup]="searchInputForm" (ngSubmit)="spinner.show(); getToursEdits();">
             <div class="row">
               <div class="form-group col-xl-6 col-md-6 col-sm-12">
                 <label for="code">Name</label>
-                <input class="form-control" id="name" type="text" name="name" formControlName="name" (keyup.enter)="spinner.show(); getToursByFilter();" />
+                <input class="form-control" id="name" type="text" name="name" formControlName="name" (keyup.enter)="spinner.show(); getToursEdits();" />
               </div> 
               <div class="form-group col-xl-6 col-md-6 col-sm-12">
                 <label for="code">Host</label>
-                <input class="form-control" id="host_name" type="text" name="host_name" formControlName="host_name" (keyup.enter)="spinner.show(); getToursByFilter();"/>
+                <input class="form-control" id="host_name" type="text" name="host_name" formControlName="host_name" (keyup.enter)="spinner.show(); getToursEdits();"/>
               </div> 
               
             </div>
             <div class="row">
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
                 <label for="code">Category</label>
-                <select class="form-control" name="category_id" formControlName="category_id" (change)="spinner.show();  getToursByFilter()">
+                <select class="form-control" name="category_id" formControlName="category_id" (change)="spinner.show();  getToursEdits()">
                   <option *ngFor="let category of categories" [value]="category.category_id">{{category.name}}</option>
                 </select>
               </div>
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
                 <label for="code">Transport</label>
-                <select class="form-control" name="transport_id" formControlName="transport_id" (change)="spinner.show(); getToursByFilter()">
+                <select class="form-control" name="transport_id" formControlName="transport_id" (change)="spinner.show(); getToursEdits()">
                   <option *ngFor="let transport of transports" [value]="transport.transport_id">{{transport.name}}</option>
                 </select>
               </div>
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
                 <label for="code">Country</label>
-                <select class="form-control" name="country_id" formControlName="country_id" (change)="spinner.show(); getCities(country_id); getToursByFilter()">
+                <select class="form-control" name="country_id" formControlName="country_id" (change)="spinner.show(); getCities(country_id); getToursEdits()">
                   <option *ngFor="let country of countries" [value]="country.country_id">{{country.name}}</option>
                 </select>
               </div>
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
                 <label for="code">City</label>
-                <select class="form-control" name="city_id" formControlName="city_id" (change)="spinner.show(); getToursByFilter()" disabled>
+                <select class="form-control" name="city_id" formControlName="city_id" (change)="spinner.show(); getToursEdits()" disabled>
                   <option *ngFor="let city of cities" [value]="city.city_id">{{city.name}}</option>
                 </select>
               </div>
@@ -44,7 +44,7 @@
             <div class="row">
               <div class="form-group col-xl-3 col-md-6 col-sm-12">
                 <label for="code">Status</label>
-                <select class="form-control" name="status" formControlName="status" (change)="spinner.show();  getToursByFilter()">
+                <select class="form-control" name="status" formControlName="status" (change)="spinner.show();  getToursEdits()">
                   <option *ngFor="let status of statusOptions" [value]="status.value">{{status.name}}</option>
                 </select>
               </div>
@@ -77,9 +77,9 @@
                   <td style="width: 80px; min-width: 80px;">{{ toursEdit.tour.host.user_name }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ toursEdit.createdAt | date:'dd/MM/yyyy' }}</td>
                   <td style="width: 100px; min-width: 100px;">
-                    <span *ngIf="toursEdit.status == 0" class="badge badge-secondary">Unpublished</span>
+                    <span *ngIf="toursEdit.status == 0" class="badge badge-secondary">Pending</span>
                     <span *ngIf="toursEdit.status == 1" class="badge badge-danger">Rejected</span>
-                    <span *ngIf="toursEdit.status == 2" class="badge badge-success">Published</span>
+                    <span *ngIf="toursEdit.status == 2" class="badge badge-success">Approved</span>
                   </td>
                   <td style="width: 120px; min-width: 120px;">
                     <button type="button" class="btn btn-sm btn-circle btn-primary"

@@ -25,9 +25,16 @@ export class ToursEditService {
       }));
   }
 
-  updateStatusOfToursEdit(toursEdit: any) {
-    return this.http.put<any>(`${environment.apiUrl}/tours-edits/publish/${toursEdit.tours_edit_id}`, {
-      status: toursEdit.new_status,
+  approveToursEdit(toursEdit: any) {
+    return this.http.put<any>(`${environment.apiUrl}/tours-edits/approve/${toursEdit.tours_edit_id}`, {
+    })
+      .pipe(map((result: any) => {
+        return result;
+      }));
+  }
+
+  rejectToursEdit(toursEdit: any) {
+    return this.http.put<any>(`${environment.apiUrl}/tours-edits/reject/${toursEdit.tours_edit_id}`, {
     })
       .pipe(map((result: any) => {
         return result;

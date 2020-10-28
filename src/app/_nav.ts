@@ -6,16 +6,21 @@ export const navItems: INavData[] = [
     url: '/dashboard',
     icon: 'fa fa-list-alt',
   },
+  // {
+  //   name: 'Terms Of Use',
+  //   url: '/terms-of-use',
+  //   icon: 'icon-book-open'
+  // },
+  // {
+  //   name: 'Notice Management',
+  //   url: '/notice-management',
+  //   icon :'fa fa-bell',
+  //   class:'menu_notification'
+  // },
   {
-    name: 'Terms Of Use',
-    url: '/terms-of-use',
-    icon: 'icon-book-open'
-  },
-  {
-    name: 'Notice Management',
-    url: '/notice-management',
-    icon :'fa fa-bell',
-    class:'menu_notification'
+    name: 'Transaction',
+    url: '/transaction',
+    icon: 'fa fa-money',
   },
   {
     name: 'Order',

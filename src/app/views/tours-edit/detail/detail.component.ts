@@ -1,10 +1,10 @@
 import {Component, OnDestroy, ViewChild, ElementRef, OnInit} from '@angular/core';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
-import { User } from '../../../_models';
+import { User, ToursEdit } from '../../../_models';
 import { FormGroup } from '@angular/forms';
 import { DialogComponent } from '../../../components';
-import { ActivatedRoute } from '@angular/router';
-import { TourService } from '../../../_services';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToursEditService } from '../../../_services';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Tour } from '../../../_models/tour';
@@ -20,24 +20,26 @@ export class DetailComponent implements OnInit  {
   @ViewChild(DialogComponent) dialog: DialogComponent;
   @ViewChild("labelImport") labelImport: ElementRef;
 
-  public tour_id: number;
+  public tours_edit_id: number;
   public formImport: FormGroup;
   public fileToUpload: File = null;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
-    private TourService: TourService,
+    private ToursEditService: ToursEditService,
     public translate: TranslateService,
     private spinner: NgxSpinnerService
   ) {
     this.route.queryParams.subscribe(params => {
-      this.tour_id = params['tour_id'];
+      this.tours_edit_id = params['tours_edit_id'];
     });
   }
 
   ngOnInit(): void {
+    this.toursEdit = new ToursEdit();
     this.tour = new Tour();
-    this.getTour();
+    this.getToursEdit();
     this.translateLang();
   }
 
@@ -50,20 +52,16 @@ export class DetailComponent implements OnInit  {
       this.translate.use(localStorage.getItem('lang'));
   }
 
+  toursEdit: ToursEdit;
   tour: Tour;
-  getTour() {
+  getToursEdit() {
     this.spinner.show();
-    this.TourService.getTour(this.tour_id).subscribe(
+    this.ToursEditService.getToursEdit(this.tours_edit_id).subscribe(
       (result) => {
         console.log(result);
         this.spinner.hide();
-        this.tour = result.data;
-        this.tour.rating = Math.floor(this.tour.rating);
-        const hostLanguages = [];
-        for (let index = 0; index < this.tour.host.usersLanguages.length; index++) {
-          hostLanguages.push(this.tour.host.usersLanguages[index].language.name);
-        }
-        this.tour.host.languages = hostLanguages.sort().join(', ');
+        this.toursEdit = result.data.tours_edit;
+        this.tour = result.data.tour;
       },
       (error) => {
         this.spinner.hide();
@@ -72,16 +70,39 @@ export class DetailComponent implements OnInit  {
     );
   }
 
-  updateStatusOfTour(tour: any){
+  approveToursEdit(toursEdit: any){
     this.spinner.show();
-    this.TourService.updateStatusOfTour(tour)
+    this.ToursEditService.approveToursEdit(toursEdit)
     .subscribe(
       (result) => {
         this.spinner.hide();
         if (result.code === 20001) {
-          this.dialog.show("The tour status has been updated", "success");
-          this.tour.status = this.tour.new_status;
-          // this.getTour();
+          this.dialog.show("The tour edit request has been approved", "success");
+          this.toursEdit.status = 2;
+          const routerlink = this.router;
+          setTimeout(function(){
+            routerlink.navigate(['/tours-edit']);
+          }, 2000);
+        } else {
+          this.dialog.show(result.message, 'error');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.show(error, 'error');
+      }
+    );
+  }
+
+  rejectToursEdit(toursEdit: any){
+    this.spinner.show();
+    this.ToursEditService.rejectToursEdit(toursEdit)
+    .subscribe(
+      (result) => {
+        this.spinner.hide();
+        if (result.code === 20001) {
+          this.dialog.show("The tour edit request has been rejected", "success");
+          this.toursEdit.status = 1;
         } else {
           this.dialog.show(result.message, 'error');
         }

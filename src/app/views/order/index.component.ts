@@ -12,7 +12,7 @@ import { DialogComponent } from '../../components';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-host-request',
+  selector: 'app-order',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })

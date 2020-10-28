@@ -68,7 +68,7 @@ export class IndexComponent implements OnInit {
     this.getToursEdits(data);
   }
 
-  orderType: number = 18; // unpublished first
+  orderType: number = 6; // unpublished first
   changeOrderType(orderType: any) {
     if (this.orderType === orderType) {
       orderType++;
@@ -112,27 +112,6 @@ export class IndexComponent implements OnInit {
       }
     );
   }
-
-  // updateStatusOfTour(tour: any){
-  //   this.spinner.show();
-  //   this.TourService.updateStatusOfTour(tour)
-  //   .subscribe(
-  //     (result) => {
-  //       this.spinner.hide();
-  //       if (result.code === 20001) {
-  //         this.modalEditTour.hide();
-  //         this.dialog.show("The tour status has been updated", "success");
-  //         this.getToursByFilter(this.page);
-  //       } else {
-  //         this.dialog.show(result.message, 'error');
-  //       }
-  //     },
-  //     (error) => {
-  //       this.spinner.hide();
-  //       this.dialog.show(error, 'error');
-  //     }
-  //   );
-  // }
 
   countries = [];
   country_id: any = '';

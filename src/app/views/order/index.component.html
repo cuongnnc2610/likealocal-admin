@@ -76,13 +76,13 @@
                 <tr>
                   <th style="width: 50px; min-width: 50px;">No</th>
                   <th style="width: 100px; min-width: 100px;">Order ID<i class="fa fa-sort ml-2" (click)="changeOrderType(3)"></i></th>
-                  <th style="width: 120px; min-width: 120px;">Email<i class="fa fa-sort ml-2" (click)="changeOrderType(5)"></i></th>
+                  <th style="width: 150px; min-width: 150px;">Email<i class="fa fa-sort ml-2" (click)="changeOrderType(5)"></i></th>
                   <th style="width: 120px; min-width: 120px;">Full name</th>
                   <th style="width: 100px; min-width: 100px;">Price</th>
                   <th style="width: 120px; min-width: 120px;">Host</th>
                   <th style="width: 120px; min-width: 120px;">Departure time</th>
                   <th style="width: 100px; min-width: 100px;">Date<i class="fa fa-sort ml-2" (click)="changeOrderType(7)"></i></th>
-                  <th style="width: 100px; min-width: 100px;">Status<i class="fa fa-sort ml-2" (click)="changeOrderType(1)"></i></th>
+                  <th style="width: 100px; min-width: 100px; max-width: 110px;">Status<i class="fa fa-sort ml-2" (click)="changeOrderType(1)"></i></th>
                   <th style="width: 120px; min-width: 120px;">Actions</th>
                 </tr>
               </thead>
@@ -90,13 +90,13 @@
                 <tr *ngFor="let order of orders; let i = index">
                   <td style="width: 50px; min-width: 50px;">{{ from + i }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ order.order_id }}</td>
-                  <td style="width: 120px; min-width: 120px;" class="word-break">{{ order.email }}</td>
+                  <td style="width: 150px; min-width: 150px;" class="word-break">{{ order.email }}</td>
                   <td style="width: 120px; min-width: 120px;">{{ order.fullname }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ (order.price - order.discount).toFixed(2) }}$</td>
                   <td style="width: 120px; min-width: 120px;">{{ order.toursHost.host.user_name }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ order.date_time | date:'dd/MM/yyyy':'UTC' }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ order.createdAt | date:'dd/MM/yyyy' }}</td>
-                  <td style="width: 100px; min-width: 100px;">
+                  <td style="width: 100px; min-width: 100px; max-width: 110px;">
                     <span *ngIf="order.is_cancelled" class="badge badge-danger">Cancelled</span>
                     <span *ngIf="order.is_paid_to_host" class="badge badge-success">Completed</span>
                     <ng-container *ngIf="!order.is_cancelled && !order.is_paid_to_host">
@@ -252,7 +252,7 @@
                   <p>{{order.toursHost.tour.name}}</p>
                 </div>
                 <div class="col-6 text-right">
-                  <p>{{order.price}}$</p>
+                  <p>{{(order.price + 0).toFixed(2)}}$</p>
                 </div>
               </div>
               <hr>
@@ -261,7 +261,7 @@
                   <p>Subtotal:</p>
                 </div>
                 <div class="col-6 text-right">
-                  <p>{{order.price}}$</p>
+                  <p>{{(order.price + 0).toFixed(2)}}$</p>
                 </div>
               </div>
               <hr>

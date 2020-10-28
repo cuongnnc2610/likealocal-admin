@@ -7,6 +7,7 @@ import { ToursPlace } from './toursPlace';
 import { ToursImage } from './toursImage';
 
 export class ToursEdit {
+    tours_edit_id: number;
     tour_id: number;
     name: string;
     description: string;

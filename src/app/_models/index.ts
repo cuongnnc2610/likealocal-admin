@@ -1,7 +1,4 @@
-export * from './groupPart';
 export * from './notification';
-export * from './orderItem';
-export * from './part';
 export * from './terms-of-use';
 
 export * from './country';
@@ -11,6 +8,7 @@ export * from './subscriber';
 export * from './benefit';
 export * from './category';
 export * from './transport';
+export * from './transactionType';
 export * from './toursHost';
 export * from './order';
 export * from './toursReview';
@@ -20,4 +18,4 @@ export * from './toursPlace';
 export * from './toursImage';
 export * from './tour';
 export * from './toursEdit';
-
+export * from './transaction';

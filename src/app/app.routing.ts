@@ -69,6 +69,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/notifications-management/index.module').then(m => m.IndexModule)
       },
       {
+        path: 'transaction',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/transaction/index.module').then(m => m.IndexModule)
+      },
+      {
         path: 'order',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/order/index.module').then(m => m.IndexModule)
