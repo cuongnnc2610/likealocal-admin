@@ -44,11 +44,11 @@
                   <td style="width: 120px; min-width: 120px;">{{ category.tours.length }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ category.createdAt | date:'dd/MM/yyyy' }}</td>
                   <td style="width: 120px; min-width: 120px;">
-                    <button type="button" class="btn btn-sm btn-circle btn-warning" data-toggle="modal"
+                    <button *ngIf="category.category_id !== 1" type="button" class="btn btn-sm btn-circle btn-warning" data-toggle="modal"
                       (click)="modalEditCategory.show(); getCategory(category);">
                       <i class="fa fa-pencil" style="color: white"></i>
                     </button>                    
-                    <button type="button" class="btn btn-sm btn-circle btn-danger"
+                    <button *ngIf="category.category_id !== 1" type="button" class="btn btn-sm btn-circle btn-danger"
                       (click)="modalConfirmRemoveCategory.show(); getCategory(category);">
                       <i class="fa fa-trash"></i>
                     </button>

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, ViewChild, ElementRef, OnInit} from '@angular/core';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
-import { User } from '../../../_models';
+import { User, ToursImage } from '../../../_models';
 import { FormGroup } from '@angular/forms';
 import { DialogComponent } from '../../../components';
 import { ActivatedRoute } from '@angular/router';
-import { TourService } from '../../../_services';
+import { TourService, ToursImageService } from '../../../_services';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Tour } from '../../../_models/tour';
@@ -27,8 +27,9 @@ export class DetailComponent implements OnInit  {
   constructor(
     private route: ActivatedRoute,
     private TourService: TourService,
+    private ToursImageService: ToursImageService,
     public translate: TranslateService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {
     this.route.queryParams.subscribe(params => {
       this.tour_id = params['tour_id'];
@@ -38,6 +39,7 @@ export class DetailComponent implements OnInit  {
   ngOnInit(): void {
     this.tour = new Tour();
     this.getTour();
+    this.getAllToursImages();
     this.translateLang();
   }
 
@@ -85,6 +87,38 @@ export class DetailComponent implements OnInit  {
         } else {
           this.dialog.show(result.message, 'error');
         }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.show(error, 'error');
+      }
+    );
+  }
+
+  toursImages: ToursImage[] = [];
+  getAllToursImages() {
+    this.ToursImageService.getAllToursImages(this.tour_id).subscribe(
+      (result) => {
+        console.log(result);
+        this.toursImages = result.data.sort((toursImage1, toursImage2) => toursImage1.status - toursImage2.status);
+      },
+      (error) => {
+        // this.spinner.hide();
+        this.dialog.show(error, 'error');
+      }
+    );
+  }
+
+  imagePath: any;
+  getImage(imagePath) {
+    this.imagePath = imagePath;
+  }
+
+  updateStatusOfToursImage(toursImage, status) {
+    this.ToursImageService.updateStatusOfToursImage(toursImage, status).subscribe(
+      (result) => {
+        console.log(result);
+        // this.getAllToursImages();
       },
       (error) => {
         this.spinner.hide();

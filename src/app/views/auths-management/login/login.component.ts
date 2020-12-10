@@ -65,6 +65,7 @@ export class LoginComponent {
       .pipe(first())
       .subscribe(
         (data) => {
+          console.log(data);
           if (data.code !== 20001) {
             this.showError = true;
             this.codeResponse = data.code;

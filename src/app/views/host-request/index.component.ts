@@ -39,7 +39,7 @@ export class IndexComponent implements OnInit {
     private MasterDataService: MasterDataService,
     public translate: TranslateService,
     private spinner: NgxSpinnerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.spinner.show();

@@ -5,16 +5,7 @@ import { Level } from './level';
 import { UsersLanguage } from './usersLanguage';
 
 export class User {
-  id: number;
-  name: string;
-  company: string;
-  country_id: number;  
-  role_id: number;
-  postal_code: string;
-  address: string;
-  token?: string;
-  data: any;
-
+  token: string;
   user_id: number;
   email: string;
   user_name: string;

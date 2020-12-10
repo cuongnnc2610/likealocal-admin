@@ -35,7 +35,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     FormsModule,
     ReactiveFormsModule,
     DialogModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   declarations: [
     IndexComponent,

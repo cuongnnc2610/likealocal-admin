@@ -1,5 +1,3 @@
-import { User } from './user';
-import { Tour } from './tour';
 import { Benefit } from './benefit';
 
 export class ToursBenefit {

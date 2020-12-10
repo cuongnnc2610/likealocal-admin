@@ -32,7 +32,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     ReactiveFormsModule,
     DialogModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ]
 })
 export class CardsModule { }

@@ -80,7 +80,7 @@
                 <tr>
                   <th style="width: 50px; min-width: 50px;">No</th>
                   <th style="width: 100px; min-width: 100px;">Amount</th>
-                  <th style="width: 120px; min-width: 120px;">Transaction number</th>
+                  <!-- <th style="width: 120px; min-width: 120px;">Transaction number</th> -->
                   <th style="width: 200px; min-width: 200px;">Transaction type</th>
                   <th style="width: 100px; min-width: 100px;">Date<i class="fa fa-sort ml-2" (click)="changeOrderType(7)"></i></th>
                   <th style="width: 120px; min-width: 120px;">Actions</th>
@@ -90,15 +90,15 @@
                 <tr *ngFor="let transaction of transactions; let i = index">
                   <td style="width: 50px; min-width: 50px;">{{ from + i }}</td>
                   <td *ngIf="transaction.transaction_type_id === 1" style="width: 100px; min-width: 100px;" class="text-success">
-                    <b>+ {{ transaction.amount }}$</b>
+                    <b>+ {{ (transaction.amount - transaction.transaction_fee).toFixed(2) }}$</b>
                   </td>
-                  <td *ngIf="transaction.transaction_type_id === 3 || transaction.transaction_type_id === 4" style="width: 100px; min-width: 100px;" class="text-warning">
-                    <b>- {{ transaction.amount }}$</b>
+                  <td *ngIf="transaction.transaction_type_id === 2 || transaction.transaction_type_id === 3 || transaction.transaction_type_id === 4" style="width: 100px; min-width: 100px;" class="text-warning">
+                    <b>- {{ (transaction.amount + 0).toFixed(2) }}$</b>
                   </td>
-                  <td *ngIf="transaction.transaction_type_id === 2 || transaction.transaction_type_id === 5" style="width: 100px; min-width: 100px;" class="text-danger">
-                    <b>- {{ transaction.amount }}$</b>
+                  <td *ngIf="transaction.transaction_type_id === 5" style="width: 100px; min-width: 100px;" class="text-danger">
+                    <b>- {{ (transaction.amount + transaction.transaction_fee).toFixed(2) }}$</b>
                   </td>
-                  <td style="width: 120px; min-width: 120px;">{{ transaction.transaction_number }}</td>
+                  <!-- <td style="width: 120px; min-width: 120px;">{{ transaction.transaction_number }}</td> -->
                   <td style="width: 200px; min-width: 200px;">{{ transaction.transactionType.name }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ transaction.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
                   <td style="width: 120px; min-width: 120px;">
@@ -458,7 +458,7 @@
                   <p>Discount:</p>
                 </div>
                 <div class="col-6 text-right">
-                  <p>- {{transaction.order.discount}}$</p>
+                  <p>- {{(transaction.order.discount * transaction.order.price / 100).toFixed(2)}}$</p>
                 </div>
               </div>
               <hr>
@@ -467,7 +467,7 @@
                   <p>Like A Local's commission:</p>
                 </div>
                 <div class="col-6 text-right">
-                  <p>- {{((transaction.order.price - transaction.order.discount) * 20 / 100).toFixed(2)}}$</p>
+                  <p>- {{((transaction.order.price - transaction.order.discount * transaction.order.price / 100) * 20 / 100).toFixed(2)}}$</p>
                 </div>
               </div>
               <hr>
@@ -476,7 +476,7 @@
                   <p>Host's received amount:</p>
                 </div>
                 <div class="col-6 text-right">
-                  <p>- {{((transaction.order.price - transaction.order.discount) * 75 / 100).toFixed(2)}}$</p>
+                  <p>- {{((transaction.order.price - transaction.order.discount * transaction.order.price / 100 ) * 70 / 100).toFixed(2)}}$</p>
                 </div>
               </div>
               <hr *ngIf="transaction.transaction_type_id === 4">
@@ -560,7 +560,7 @@
                   <p><b>Actual sent amount:</b></p>
                 </div>
                 <div class="col-6 text-right">
-                  <span class="ml-2 text-danger"><b>{{(transaction.amount - transaction.transaction_fee).toFixed(2)}}$</b></span>
+                  <span class="ml-2 text-danger"><b>{{(transaction.amount + transaction.transaction_fee).toFixed(2)}}$</b></span>
                 </div>
               </div>
               <div class="row">

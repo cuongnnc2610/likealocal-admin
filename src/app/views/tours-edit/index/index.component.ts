@@ -191,7 +191,7 @@ export class IndexComponent implements OnInit {
     );
   }
 
-  statusOptions = [{value: '', name: 'All'}, {value: 0, name: 'Unpublished'}, {value: 1, name: 'Rejected'}, {value: 2, name: 'Published'}]
+  statusOptions = [{value: '', name: 'All'}, {value: 0, name: 'Pending'}, {value: 1, name: 'Rejected'}];
 
   // SEARCH FORM
   searchForm = new FormGroup({

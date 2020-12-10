@@ -72,9 +72,10 @@ export class IndexComponent implements OnInit {
     this.currentPage(1);
   }
 
-  statusSearchOptions = [{value: "", name: "All"}, {value: 1, name: "Unconfirmed"}, {value: 2, name: "Confirmed"}, {value: 3, name: "Completed"}];
+  statusSearchOptions = [{value: "", name: "All"}, {value: 0, name: "Unconfirmed"}, {value: 1, name: "Confirmed"}, {value: 2, name: "Finished"}];
   isCancelSearchOptions = [{value: "", name: "All"}, {value: true, name: "Cancelled"}, {value: false, name: "Not Cancelled"}];
   isPaidToSystemSearchOptions = [{value: "", name: "All"}, {value: true, name: "Paid"}, {value: false, name: "Unpaid"}];
+  isPaidToHostSearchOptions = [{value: "", name: "All"}, {value: true, name: "Paid"}, {value: false, name: "Unpaid"}];
   getOrders(numberPage: number = 1) {    
     this.OrderService.getOrders(numberPage, this.searchInputForm.controls, this.orderType).subscribe(
       (result) => {
@@ -109,6 +110,27 @@ export class IndexComponent implements OnInit {
         if (result.code === 20001) {
           this.modalEditOrder.hide();
           this.dialog.show("The order has been cancelled", "success");
+          this.getOrders(this.page);
+        } else {
+          this.dialog.show(result.message, 'error');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.show(error, 'error');
+      }
+    );
+  }
+
+  completeOrder(){
+    this.spinner.show();
+    this.OrderService.completeOrder(this.order)
+    .subscribe(
+      (result) => {
+        this.spinner.hide();
+        if (result.code === 20001) {
+          this.modalEditOrder.hide();
+          this.dialog.show("The order has been completed", "success");
           this.getOrders(this.page);
         } else {
           this.dialog.show(result.message, 'error');

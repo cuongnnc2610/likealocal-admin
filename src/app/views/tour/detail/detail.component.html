@@ -137,6 +137,22 @@
               </div>
             </div>                
           </div>
+          <div class="row">
+            <div class="form-group col-12">
+              <p class="mb-3"><b>Images</b></p>
+            </div>
+          </div>
+          <div class="row">
+            <div *ngFor="let toursImage of toursImages" class="col-xl-2 col-md-3 col-sm-4 tour-image-container" (click)="modalImage.show(); getImage(toursImage.path);">
+                <img src="{{toursImage.path}}" height="130px" width="100%" class="tour-image">
+                <div *ngIf="toursImage.status === 0" class="image-pending"></div>
+                <div *ngIf="toursImage.status === 1" class="image-rejected"></div>
+                <div class="image-button text-right">
+                  <button *ngIf="toursImage.status !== 1" class="btn-danger" style="border-radius: 5px; margin: 0; border: none;" (click)="toursImage.status = 1; updateStatusOfToursImage(toursImage, 1); $event.stopPropagation()"><i class="fa fa-minus-circle"></i></button>
+                  <button *ngIf="toursImage.status !== 2" class="btn-success" style="border-radius: 5px; margin: 0; border: none;" (click)="toursImage.status = 2; updateStatusOfToursImage(toursImage, 2); $event.stopPropagation()"><i class="fa fa-check-circle"></i></button>
+                </div>
+            </div>             
+          </div>
           <div class="pt-4 d-flex justify-content-center">
             <button *ngIf="tour.status != 1" class="btn mr-2 btn-pill btn-danger" (click)="tour.new_status = 1; updateStatusOfTour(tour)">
               Reject
@@ -155,6 +171,14 @@
       </div>
     </div>
   </div>  
+</div>
+<div bsModal #modalImage="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background: none; border: none">
+      <img src="{{imagePath}}" width="100%">
+    </div>
+  </div>
 </div>
 <app-dialog></app-dialog>
 <ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

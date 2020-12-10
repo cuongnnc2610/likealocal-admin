@@ -1,11 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import { StatisticService } from '../../_services';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { DialogComponent } from '../../components';
 
 @Component({
   templateUrl: 'index.component.html'
 })
 export class IndexComponent implements OnInit {
+  @ViewChild(DialogComponent) dialog: DialogComponent;
+
+  constructor(
+    private StatisticService: StatisticService,
+    public translate: TranslateService,
+    private spinner: NgxSpinnerService
+  ) {}
+
+  ngOnInit(): void {
+    this.spinner.show();
+    this.getStatistics();
+    // generate random values for mainChart
+    for (let i = 0; i <= this.mainChartElements; i++) {
+      this.mainChartData1.push(this.random(50, 200));
+      this.mainChartData2.push(this.random(80, 100));
+      this.mainChartData3.push(65);
+    }
+  }
 
   radioModel: string = 'Month';
 
@@ -377,12 +400,46 @@ export class IndexComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  ngOnInit(): void {
-    // generate random values for mainChart
-    for (let i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50, 200));
-      this.mainChartData2.push(this.random(80, 100));
-      this.mainChartData3.push(65);
-    }
+  numberOfNormalUsers: number;
+  numberOfHosts: number;
+  numberOfTours: number;
+  numberOfOrders: number;
+  numberOfSubscribers: number;
+  numberOfHostsReviews: number;
+  numberOfToursReviews: number;
+  numberOfToursImages: number;
+  getStatistics() {    
+    this.StatisticService.getStatistics(this.searchInputForm.controls).subscribe(
+      (result) => {
+        console.log(result);
+        result = result.data;
+        this.spinner.hide();
+        this.numberOfNormalUsers = result.number_of_normal_users;
+        this.numberOfHosts = result.number_of_hosts;
+        this.numberOfTours = result.number_of_tours;
+        this.numberOfOrders = result.number_of_orders;
+        this.numberOfSubscribers = result.number_of_subscribers;
+        this.numberOfHostsReviews = result.number_of_hosts_reviews;
+        this.numberOfToursReviews = result.number_of_tours_reviews;
+        this.numberOfToursImages = result.number_of_tours_images;
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.show(error, 'error');
+      }
+    );
+  }
+
+  // SEARCH FORM
+  searchForm = new FormGroup({
+    start_date: new FormControl("", []),
+    end_date: new FormControl("", []),
+  });
+  searchInputForm = this.searchForm;
+  clearSearchInputForm() {
+    this.searchInputForm.setValue({
+      start_date: '',
+      end_date: '',
+    });
   }
 }

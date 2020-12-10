@@ -1,4 +1,3 @@
-import { User } from './user';
 import { Order } from './order';
 
 export class ToursReview {

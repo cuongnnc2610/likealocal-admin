@@ -67,6 +67,12 @@
                   <option *ngFor="let isPaidToSystemSearchOption of isPaidToSystemSearchOptions" [value]="isPaidToSystemSearchOption.value">{{isPaidToSystemSearchOption.name}}</option>
                 </select>
               </div>
+              <div class="form-group col-xl-3 col-md-6 col-sm-12">
+                <label for="is_paid_to_system">Paid To Host Status</label>
+                <select class="form-control" name="is_paid_to_host" formControlName="is_paid_to_host" (change)="spinner.show(); getOrders();">
+                  <option *ngFor="let isPaidToHostSearchOption of isPaidToHostSearchOptions" [value]="isPaidToHostSearchOption.value">{{isPaidToHostSearchOption.name}}</option>
+                </select>
+              </div>
             </div>
           </form>
           <br />
@@ -92,7 +98,7 @@
                   <td style="width: 100px; min-width: 100px;">{{ order.order_id }}</td>
                   <td style="width: 150px; min-width: 150px;" class="word-break">{{ order.email }}</td>
                   <td style="width: 120px; min-width: 120px;">{{ order.fullname }}</td>
-                  <td style="width: 100px; min-width: 100px;">{{ (order.price - order.discount).toFixed(2) }}$</td>
+                  <td style="width: 100px; min-width: 100px;">{{ (order.price - order.discount * order.price / 100).toFixed(2) }}$</td>
                   <td style="width: 120px; min-width: 120px;">{{ order.toursHost.host.user_name }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ order.date_time | date:'dd/MM/yyyy':'UTC' }}</td>
                   <td style="width: 100px; min-width: 100px;">{{ order.createdAt | date:'dd/MM/yyyy' }}</td>
@@ -271,7 +277,7 @@
                 </div>
                 <div class="col-6 text-right">
                   <span *ngIf="order.discount !== 0">({{order.coupon.code}}) </span>
-                  <span>{{(order.discount + 0).toFixed(2)}}$</span>                  
+                  <span>{{(order.discount * order.price / 100).toFixed(2)}}$</span>                  
                 </div>
               </div>
               <hr>
@@ -281,8 +287,9 @@
                 </div>
                 <div class="col-6 text-right">
                   <span *ngIf="!order.is_paid_to_system" class="badge badge-secondary">Unpaid</span>
-                  <span *ngIf="order.is_paid_to_system" class="badge badge-primary">Paid</span>
-                  <span class="ml-2"><b>{{(order.price - order.discount).toFixed(2)}}$</b></span>
+                  <span *ngIf="order.is_paid_to_system && !order.is_refunded" class="badge badge-primary">Paid</span>
+                  <span *ngIf="order.is_paid_to_system && order.is_refunded" class="badge badge-danger">Refunded</span>
+                  <span class="ml-2"><b>{{(order.price - order.discount * order.price / 100).toFixed(2)}}$</b></span>
                 </div>
               </div>
               <div class="row">
@@ -296,6 +303,9 @@
           <div class="pt-4 d-flex justify-content-center">
             <button *ngIf="!order.is_paid_to_host && !order.is_cancelled" type="submit" class="btn mr-2 btn-pill btn-danger" (click)="cancelOrder();">
               Reject
+            </button>
+            <button *ngIf="!order.is_paid_to_host && !order.is_cancelled && order.status === 2 && order.is_paid_to_system" type="submit" class="btn mr-2 btn-pill btn-success" (click)="completeOrder();">
+              Complete
             </button>
             <button type="button" class="btn btn-pill btn-light" (click)="modalEditOrder.hide()">
               {{'COMMON.BUTTON.BTN_CANCEL'|  translate}}
